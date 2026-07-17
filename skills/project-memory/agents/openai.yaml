@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Memory"
+  short_description: "Persist confirmed, evidence-backed project rules and learnings"
+  default_prompt: "Use $project-memory to assess and persist this confirmed durable project rule."
+policy:
+  allow_implicit_invocation: true

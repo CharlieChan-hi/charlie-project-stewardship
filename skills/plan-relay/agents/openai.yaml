@@ -1,0 +1,6 @@
+interface:
+  display_name: "Plan Relay"
+  short_description: "Persist and resume an explicitly durable cross-session plan"
+  default_prompt: "Use $plan-relay to persist or resume this explicitly durable multi-step plan."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Scaffold"
+  short_description: "Compatibility entry for explicit non-overwriting scaffolds"
+  default_prompt: "Use $project-scaffold to preview or apply this explicitly requested non-overwriting scaffold according to the user's write intent."
+policy:
+  allow_implicit_invocation: false

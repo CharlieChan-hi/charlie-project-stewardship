@@ -1,0 +1,6 @@
+interface:
+  display_name: "开工向导"
+  short_description: "兼容开工入口，转到最小 project-bootstrap 路径"
+  default_prompt: "用 $start-here 为这个项目选择最小、非覆盖式的开工路径。"
+policy:
+  allow_implicit_invocation: false

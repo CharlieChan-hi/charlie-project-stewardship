@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Intake"
+  short_description: "Compatibility intake questionnaire for confirmed project facts"
+  default_prompt: "Use $project-intake to collect only the project facts that materially affect setup."
+policy:
+  allow_implicit_invocation: false

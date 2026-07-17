@@ -1,0 +1,53 @@
+{
+  "name": "backend-api",
+  "summary": "Backend/API structure with API surface, services, models, repositories, config, and tests.",
+  "dependency_direction": "api -> services -> repositories/external adapters -> models. API handlers should stay thin.",
+  "folders": [
+    {
+      "path": "src/api",
+      "responsibility": "HTTP/API entry points, routing, request/response boundaries.",
+      "allowed": "Route handlers, controllers, request validation boundaries.",
+      "avoid": "Business logic and direct database implementation details."
+    },
+    {
+      "path": "src/services",
+      "responsibility": "Business logic and application use cases.",
+      "allowed": "Use case orchestration, domain workflows, transaction boundaries.",
+      "avoid": "Framework-specific request objects when avoidable."
+    },
+    {
+      "path": "src/repositories",
+      "responsibility": "Persistence and external data source adapters.",
+      "allowed": "Database queries, storage adapters, external API data adapters.",
+      "avoid": "HTTP routing and UI assumptions."
+    },
+    {
+      "path": "src/models",
+      "responsibility": "Domain models, schemas, DTOs, and validation types.",
+      "allowed": "Schemas, types, serializers, value objects.",
+      "avoid": "Network side effects."
+    },
+    {
+      "path": "src/config",
+      "responsibility": "Configuration loading and environment validation.",
+      "allowed": "Typed config, env validation with placeholders.",
+      "avoid": "Real secrets or checked-in credentials."
+    },
+    {
+      "path": "tests",
+      "responsibility": "Unit, integration, and contract tests.",
+      "allowed": "Service tests, API tests, repository tests with fixtures.",
+      "avoid": "Manual-only validation for auth, data, or payment behavior."
+    }
+  ],
+  "rules": [
+    "Do not expose model/API provider keys to clients.",
+    "Keep API handlers thin and service logic testable.",
+    "Use security-focused review appropriate to the changed auth, payment, secret, or data-access boundary; use a specialized Skill only when it is exposed and useful."
+  ],
+  "validation": [
+    "Inspect project scripts before running tests or migrations.",
+    "Do not run database migrations without explicit confirmation.",
+    "Choose security scanning, threat modeling, or project-native checks according to the changed auth, payment, secret, or data-access surface and the capabilities already available."
+  ]
+}

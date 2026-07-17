@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Health"
+  short_description: "Audit project health and choose risk-based validation"
+  default_prompt: "Use $project-health for this explicit audit or completion-evidence request and choose proportionate checks."
+policy:
+  allow_implicit_invocation: true

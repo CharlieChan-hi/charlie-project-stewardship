@@ -1,0 +1,71 @@
+{
+  "name": "macos-swiftui",
+  "summary": "macOS SwiftUI structure with explicit app, windows, features, shared UI, services, models, and test boundaries.",
+  "dependency_direction": "App -> Windows/Commands -> Features -> SharedUI / DesignSystem -> Services -> Models.",
+  "folders": [
+    {
+      "path": "Sources/App",
+      "responsibility": "App entry, app scene composition, dependency assembly.",
+      "allowed": "App lifecycle, settings scene, root dependency setup.",
+      "avoid": "Window-specific behavior and feature logic."
+    },
+    {
+      "path": "Sources/Windows",
+      "responsibility": "Window scene, command, toolbar, and placement behavior.",
+      "allowed": "Window controllers, scene definitions, command groups, toolbar composition.",
+      "avoid": "Business logic and data persistence."
+    },
+    {
+      "path": "Sources/Features",
+      "responsibility": "User-facing feature areas.",
+      "allowed": "Feature views, view models, feature state.",
+      "avoid": "Global services and unrelated shared utilities."
+    },
+    {
+      "path": "Sources/SharedUI",
+      "responsibility": "Reusable desktop UI components.",
+      "allowed": "Controls, modifiers, layout primitives, status views.",
+      "avoid": "Feature-specific workflows."
+    },
+    {
+      "path": "Sources/DesignSystem",
+      "responsibility": "Project UI tokens, platform UI rules, and component policy.",
+      "allowed": "Color tokens, typography scales, spacing constants, system component wrappers.",
+      "avoid": "UI-system or third-party wrappers that conflict with existing conventions or require unapproved dependencies."
+    },
+    {
+      "path": "Sources/Services",
+      "responsibility": "System, persistence, network, file, and app service boundaries.",
+      "allowed": "File access wrappers, persistence adapters, network clients, platform services.",
+      "avoid": "SwiftUI rendering logic."
+    },
+    {
+      "path": "Sources/Models",
+      "responsibility": "Shared data structures and domain types.",
+      "allowed": "Value types, DTOs, domain state.",
+      "avoid": "UI and side effects."
+    },
+    {
+      "path": "Tests",
+      "responsibility": "Automated tests and verification fixtures.",
+      "allowed": "Unit tests, integration tests, UI-adjacent test fixtures.",
+      "avoid": "One-off manual test notes only."
+    }
+  ],
+  "rules": [
+    "Preserve the existing deployment target, build settings, window behavior, design system, and component conventions before choosing new APIs.",
+    "Use native SwiftUI/system components, semantic colors and type, and SF Symbols when they fit the product, accessibility needs, and confirmed deployment target.",
+    "Follow the project's established desktop density, spacing, typography, and token conventions instead of imposing an iOS-derived or generic palette.",
+    "Support keyboard shortcuts and menu commands where the product workflow or accessibility contract calls for them.",
+    "Use SwiftUI or a narrow AppKit bridge according to capability, compatibility, and existing project conventions; document a bridge when its boundary is non-obvious.",
+    "Use Liquid Glass or another current Apple design language only when the confirmed target supports it, the product wants it, and current official documentation validates the approach; do not raise deployment targets or restyle an existing product by default.",
+    "Verify current Apple developer documentation before implementing newly introduced platform UI APIs.",
+    "Do not install third-party UI libraries without explicit authorization and a demonstrated need.",
+    "When visual direction is incomplete, preserve existing design signals or propose a coherent option and label assumptions instead of waiting for a fixed second phase.",
+    "Separate window behavior from feature business logic."
+  ],
+  "validation": [
+    "Use the macOS build/run/debug workflow when available.",
+    "Verify window, command, toolbar, and settings behavior after UI changes."
+  ]
+}

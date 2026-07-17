@@ -1,0 +1,17 @@
+.DS_Store
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+.turbo/
+.cache/
+DerivedData/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template

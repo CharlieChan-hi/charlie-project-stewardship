@@ -1,0 +1,21 @@
+{
+  "name": "charlie-project-stewardship",
+  "interface": {
+    "displayName": "Charlie Project Stewardship"
+  },
+  "plugins": [
+    {
+      "name": "charlie-project-stewardship",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/CharlieChan-hi/charlie-project-stewardship.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

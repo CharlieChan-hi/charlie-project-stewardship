@@ -1,0 +1,65 @@
+{
+  "name": "ios-swiftui",
+  "summary": "iOS/iPadOS SwiftUI structure with clear app, feature, shared UI, design system, service, model, and test boundaries.",
+  "dependency_direction": "App entry -> Features -> SharedUI / DesignSystem -> Services -> Models. Feature code should not import another feature's internals.",
+  "folders": [
+    {
+      "path": "Sources/App",
+      "responsibility": "App entry, scene setup, root navigation, dependency assembly.",
+      "allowed": "App lifecycle, root coordinators, environment injection, top-level navigation.",
+      "avoid": "Feature business logic, API clients, reusable controls, model definitions."
+    },
+    {
+      "path": "Sources/Features",
+      "responsibility": "User-facing feature modules.",
+      "allowed": "Feature views, view models, feature-local state, feature-local helpers.",
+      "avoid": "Cross-feature imports that bypass a public boundary."
+    },
+    {
+      "path": "Sources/SharedUI",
+      "responsibility": "Reusable SwiftUI controls that are not tied to one feature.",
+      "allowed": "Small reusable views, modifiers, empty/loading/error states.",
+      "avoid": "Feature-specific screens or business rules."
+    },
+    {
+      "path": "Sources/DesignSystem",
+      "responsibility": "Project UI tokens, platform UI rules, and component policy.",
+      "allowed": "Color and typography tokens, spacing, system component wrappers, and UI-system configuration supported by the confirmed target.",
+      "avoid": "UI-system or third-party wrappers that conflict with existing conventions or require unapproved dependencies."
+    },
+    {
+      "path": "Sources/Services",
+      "responsibility": "API clients, persistence adapters, platform services, and integration boundaries.",
+      "allowed": "Network, storage, system service wrappers, dependency protocols.",
+      "avoid": "SwiftUI views and feature-specific presentation logic."
+    },
+    {
+      "path": "Sources/Models",
+      "responsibility": "Domain models, DTOs, and shared value types.",
+      "allowed": "Codable types, domain state, value objects.",
+      "avoid": "Networking side effects or UI state machines."
+    },
+    {
+      "path": "Tests",
+      "responsibility": "Unit, integration, and UI test entry points.",
+      "allowed": "Focused tests for models, services, view models, and critical flows.",
+      "avoid": "Manual-only validation notes as a substitute for tests when tests are practical."
+    }
+  ],
+  "rules": [
+    "Preserve the existing deployment target, build settings, navigation, design system, and component conventions before choosing new APIs.",
+    "Use native SwiftUI/system components, semantic colors and type, and SF Symbols when they fit the product, accessibility needs, and confirmed deployment target.",
+    "Follow existing shape, spacing, typography, and token conventions; add tokens only when repeated use or product requirements justify them.",
+    "Use custom effects and motion when they serve product intent and pass accessibility, performance, and compatibility checks; do not add them as generic decoration.",
+    "Do not install third-party UI libraries without explicit authorization and a demonstrated need.",
+    "Use Liquid Glass or another current Apple design language only when the confirmed target supports it, the product wants it, and current official documentation validates the approach; do not raise deployment targets or restyle an existing product by default.",
+    "Verify current Apple developer documentation before implementing newly introduced platform UI APIs.",
+    "When visual direction is incomplete, preserve existing design signals or propose a coherent option and label assumptions instead of waiting for a fixed second phase.",
+    "Record durable, confirmed UI rules in docs/project_preferences.md; mirror only explicit hard invariants into AGENTS.md."
+  ],
+  "validation": [
+    "Inspect Xcode schemes before building.",
+    "Use the iOS build/run/debug workflow when simulator verification is needed.",
+    "Validate visible changes with screenshots or simulator inspection when available and proportionate."
+  ]
+}

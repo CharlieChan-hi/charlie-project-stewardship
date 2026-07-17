@@ -1,0 +1,62 @@
+{
+  "name": "nextjs",
+  "summary": "Next.js structure that preserves an existing root/src and App/Pages Router layout while organizing features, components, server/data services, models, and tests.",
+  "dependency_direction": "app routes -> features -> components/services/models/lib. Server-only code must not leak into client components.",
+  "folders": [
+    {
+      "path": "app",
+      "responsibility": "Next.js routes, layouts, loading/error boundaries, route handlers when appropriate.",
+      "allowed": "Route segments, layouts, metadata, server/client boundary composition.",
+      "avoid": "Large business logic directly inside route files."
+    },
+    {
+      "path": "features",
+      "responsibility": "Feature modules used by routes.",
+      "allowed": "Feature UI, feature actions, feature state, feature-specific composition.",
+      "avoid": "Unrelated shared components."
+    },
+    {
+      "path": "components",
+      "responsibility": "Reusable UI components.",
+      "allowed": "Design-system-adjacent controls and layout primitives.",
+      "avoid": "Server data fetching unless explicitly designed."
+    },
+    {
+      "path": "services",
+      "responsibility": "Data access, API clients, server actions, external service adapters.",
+      "allowed": "Server-only adapters, fetch clients, auth/data wrappers.",
+      "avoid": "Client component rendering code."
+    },
+    {
+      "path": "models",
+      "responsibility": "Shared types, validation schemas, and DTOs.",
+      "allowed": "Zod schemas, TypeScript types, domain models.",
+      "avoid": "Side effects."
+    },
+    {
+      "path": "lib",
+      "responsibility": "Small framework utilities.",
+      "allowed": "Pure utilities, config helpers, formatting helpers.",
+      "avoid": "A dumping ground for feature logic."
+    },
+    {
+      "path": "tests",
+      "responsibility": "Unit, integration, and end-to-end tests.",
+      "allowed": "Vitest/Jest/Playwright tests as project conventions allow.",
+      "avoid": "Manual-only verification for critical behavior."
+    }
+  ],
+  "rules": [
+    "Preserve the project's existing root or src placement and App/Pages Router choice; do not create a competing router root.",
+    "Preserve the existing framework, design system, and component conventions. For greenfield choices, use semantic HTML and accessible, maintainable styling that fits the product.",
+    "Respect server/client component boundaries.",
+    "Keep route files thin when feature logic grows.",
+    "Use official Next/React guidance for data fetching and rendering changes.",
+    "If the project already uses a CSS framework, follow the existing convention; if it does not, add one only for a demonstrated need and with authorization.",
+    "When visual direction is incomplete, preserve existing tokens or propose a coherent option and label assumptions; do not force a separate structural-baseline phase."
+  ],
+  "validation": [
+    "Inspect package scripts before running lint/test/build.",
+    "Use browser verification for visible UI changes."
+  ]
+}

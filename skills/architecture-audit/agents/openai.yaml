@@ -1,0 +1,6 @@
+interface:
+  display_name: "Architecture Audit"
+  short_description: "Compatibility entry for an explicit read-only architecture audit"
+  default_prompt: "Use $architecture-audit to run a read-only, evidence-backed architecture audit."
+policy:
+  allow_implicit_invocation: false

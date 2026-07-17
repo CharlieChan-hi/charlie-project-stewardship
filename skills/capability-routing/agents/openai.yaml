@@ -1,0 +1,6 @@
+interface:
+  display_name: "Capability Routing"
+  short_description: "Compatibility entry for explicit capability-map maintenance"
+  default_prompt: "Use $capability-routing to inspect exposed capabilities and propose the smallest useful route map."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Completion Guard"
+  short_description: "Compatibility entry for an explicit completion evidence check"
+  default_prompt: "Use $completion-guard to choose proportionate evidence before this handoff."
+policy:
+  allow_implicit_invocation: false

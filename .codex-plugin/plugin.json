@@ -1,0 +1,42 @@
+{
+  "name": "charlie-project-stewardship",
+  "version": "2.1.1",
+  "description": "A lightweight, repository-local stewardship harness that preserves project context and completion evidence for coding agents without imposing a fixed workflow.",
+  "author": {
+    "name": "Charlie",
+    "url": "https://github.com/CharlieChan-hi"
+  },
+  "homepage": "https://github.com/CharlieChan-hi/charlie-project-stewardship",
+  "repository": "https://github.com/CharlieChan-hi/charlie-project-stewardship",
+  "license": "MIT",
+  "keywords": [
+    "project-stewardship",
+    "coding-agent",
+    "task-contract",
+    "project-memory",
+    "plan-relay",
+    "project-health"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Charlie Project Stewardship",
+    "shortDescription": "Durable project context without a rigid workflow.",
+    "longDescription": "A repository-local stewardship layer for capable coding agents. Five independent capabilities bound ambiguity-sensitive work, bootstrap only missing project context, preserve verified knowledge, relay genuinely long-running plans, and choose completion evidence from the actual change surface. Every capability is optional; the plugin does not impose a fixed development workflow or require an external task system.",
+    "developerName": "Charlie",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/CharlieChan-hi/charlie-project-stewardship",
+    "brandColor": "#F74D7B",
+    "composerIcon": "./assets/stewardship-icon.png",
+    "logo": "./assets/stewardship-icon.png",
+    "defaultPrompt": [
+      "Turn this complex request into a bounded task contract with explicit acceptance evidence.",
+      "Inspect this project and add only the stewardship files it genuinely needs.",
+      "Save this verified decision with its scope, evidence, and re-check condition."
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "name": "web-react",
+  "summary": "Frontend app structure for React/Vite/Vue-style projects with app shell, features, components, services, models, styles, and tests.",
+  "dependency_direction": "app -> features -> components/services/models/lib. Shared code must not depend on feature internals.",
+  "folders": [
+    {
+      "path": "src/app",
+      "responsibility": "App shell, providers, routing integration, top-level layout.",
+      "allowed": "Provider composition, route registration, global layout.",
+      "avoid": "Feature business logic and low-level reusable components."
+    },
+    {
+      "path": "src/features",
+      "responsibility": "User-facing feature modules.",
+      "allowed": "Feature pages, feature state, feature-specific components.",
+      "avoid": "Shared component dumping ground."
+    },
+    {
+      "path": "src/components",
+      "responsibility": "Reusable UI components.",
+      "allowed": "Generic controls, layout primitives, status states.",
+      "avoid": "API calls and feature-specific workflows."
+    },
+    {
+      "path": "src/services",
+      "responsibility": "API clients, data access, browser/platform service wrappers.",
+      "allowed": "Fetch clients, SDK adapters, persistence wrappers.",
+      "avoid": "React rendering and view state."
+    },
+    {
+      "path": "src/models",
+      "responsibility": "Shared types, schemas, and domain models.",
+      "allowed": "TypeScript types, validation schemas, DTOs.",
+      "avoid": "Side effects and component code."
+    },
+    {
+      "path": "src/lib",
+      "responsibility": "Small framework utilities with clear ownership.",
+      "allowed": "Pure helpers used by multiple modules.",
+      "avoid": "Unrelated `utils` dumping ground."
+    },
+    {
+      "path": "src/styles",
+      "responsibility": "Global styles, tokens, and theme integration.",
+      "allowed": "Global CSS, design tokens, theme variables.",
+      "avoid": "Feature-specific CSS unless project conventions require it."
+    },
+    {
+      "path": "tests",
+      "responsibility": "Automated tests and browser fixtures.",
+      "allowed": "Unit, integration, and UI tests.",
+      "avoid": "Replacing runnable tests with screenshots only."
+    }
+  ],
+  "rules": [
+    "Preserve the existing framework, design system, and component conventions. For greenfield choices, use semantic HTML and accessible, maintainable styling that fits the product.",
+    "Preserve existing typography; choose a system or web font according to product identity, performance, licensing, and accessibility.",
+    "Reuse existing design system and component conventions first.",
+    "Keep API/data access out of components when the project size justifies separation.",
+    "If the project already uses a CSS framework such as Tailwind, follow the existing convention; if it does not, add one only for a demonstrated need and with authorization.",
+    "Do not create generic helper buckets for unrelated logic.",
+    "When visual direction is incomplete, preserve existing tokens or propose a coherent option and label assumptions; do not force a separate structural-baseline phase."
+  ],
+  "validation": [
+    "Inspect package scripts before running lint/test/build.",
+    "Use browser verification for visible or interactive UI changes."
+  ]
+}

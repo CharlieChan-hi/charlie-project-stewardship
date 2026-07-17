@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Bootstrap"
+  short_description: "Bootstrap or adopt a project with a lean context map"
+  default_prompt: "Use $project-bootstrap for this explicit bootstrap or adoption request and propose the smallest non-overwriting project map."
+policy:
+  allow_implicit_invocation: true

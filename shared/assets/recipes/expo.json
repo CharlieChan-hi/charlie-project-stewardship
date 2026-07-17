@@ -1,0 +1,63 @@
+{
+  "name": "expo",
+  "summary": "Expo/React Native structure with app routes, features, native-ready components, services, models, design system, and tests.",
+  "dependency_direction": "app routes -> src/features -> src/components/design-system -> src/services -> src/models.",
+  "folders": [
+    {
+      "path": "app",
+      "responsibility": "Expo Router routes, layouts, and navigation entry points.",
+      "allowed": "Route files, layouts, navigation shells.",
+      "avoid": "Large feature business logic."
+    },
+    {
+      "path": "src/features",
+      "responsibility": "Feature modules and screens.",
+      "allowed": "Feature UI, state, hooks, local components.",
+      "avoid": "Global service clients and unrelated shared UI."
+    },
+    {
+      "path": "src/components",
+      "responsibility": "Reusable cross-feature native UI components.",
+      "allowed": "Reusable controls, states, layout primitives.",
+      "avoid": "Feature-specific flows."
+    },
+    {
+      "path": "src/design-system",
+      "responsibility": "Tokens, themes, platform UI rules, and component policy.",
+      "allowed": "Color, typography, spacing, component wrappers.",
+      "avoid": "Business logic."
+    },
+    {
+      "path": "src/services",
+      "responsibility": "API clients, storage, native service adapters.",
+      "allowed": "Network, secure storage wrappers, and analytics adapters already in scope and authorized.",
+      "avoid": "Rendering logic."
+    },
+    {
+      "path": "src/models",
+      "responsibility": "Shared types, schemas, and domain models.",
+      "allowed": "TypeScript types, DTOs, validation schemas.",
+      "avoid": "Side effects."
+    },
+    {
+      "path": "tests",
+      "responsibility": "Automated tests and fixtures.",
+      "allowed": "Unit, integration, and UI-adjacent tests.",
+      "avoid": "Manual-only validation for critical behavior."
+    }
+  ],
+  "rules": [
+    "Follow the project's existing Expo/React Native structure, components, navigation, and design system; for greenfield choices, prefer well-supported platform primitives that meet the product requirement.",
+    "Respect the project's routing conventions; use Expo Router conventions when Expo Router is the selected router.",
+    "Use platform-adaptive behavior via Platform.OS checks when needed.",
+    "Preserve existing typography. For new choices, prefer accessible platform-supported fonts unless the product requires a custom family.",
+    "Keep native service adapters out of UI components.",
+    "Do not install or replace a UI component kit without explicit authorization and a demonstrated need.",
+    "When visual direction is incomplete, preserve existing tokens or propose a coherent option and label assumptions; do not force a separate baseline-then-design phase.",
+    "Use an exposed Expo-specific Skill when deployment, native modules, or data fetching needs current domain guidance."
+  ],
+  "validation": [
+    "Inspect package scripts before running checks.",
+    "Use Expo run actions or simulator/device verification when behavior is native-specific."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "charlie-project-stewardship",
+  "version": "2.1.1",
+  "description": "A lightweight, repository-local stewardship harness that preserves project context and completion evidence for coding agents without imposing a fixed workflow.",
+  "author": {
+    "name": "Charlie",
+    "url": "https://github.com/CharlieChan-hi"
+  },
+  "homepage": "https://github.com/CharlieChan-hi/charlie-project-stewardship",
+  "repository": "https://github.com/CharlieChan-hi/charlie-project-stewardship",
+  "license": "MIT",
+  "keywords": [
+    "project-stewardship",
+    "project-bootstrap",
+    "task-contract",
+    "project-health",
+    "project-memory",
+    "plan-relay",
+    "coding-agent"
+  ]
+}
