@@ -675,7 +675,10 @@ def _stage_bytes(
     if hasattr(os, "O_CLOEXEC"):
         flags |= os.O_CLOEXEC
     for _attempt in range(128):
-        name = f".{path.name}.{secrets.token_hex(16)}.tmp"
+        # Keep the staging component independent of the destination name. A final
+        # component can validly approach NAME_MAX while the old
+        # `.<destination>.<token>.tmp` form exceeded Linux's 255-byte limit.
+        name = f".steward-{secrets.token_hex(16)}.tmp"
         try:
             fd = os.open(name, flags, 0o600, dir_fd=parent_fd)
             break

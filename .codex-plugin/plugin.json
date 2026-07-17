@@ -1,6 +1,6 @@
 {
   "name": "charlie-project-stewardship",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A lightweight, repository-local stewardship harness that preserves project context and completion evidence for coding agents without imposing a fixed workflow.",
   "author": {
     "name": "Charlie",

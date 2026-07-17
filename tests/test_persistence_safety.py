@@ -433,6 +433,24 @@ class PlanPersistenceSafetyTests(unittest.TestCase):
         plan_file = next((self.root / "plans" / "active").glob("*.md"))
         self.assertLessEqual(len(os.fsencode(plan_file.name)), 231)
 
+    def test_staging_component_is_bounded_independently_of_plan_filename(self) -> None:
+        observed: list[str] = []
+
+        def reject_open(name: str, *_args: object, **_kwargs: object) -> int:
+            observed.append(name)
+            raise OSError("stop after capturing the staging component")
+
+        destination = Path(("𠀀" * 55) + "-digest.md")
+        with mock.patch.object(
+            fs.secrets, "token_hex", return_value="a" * 32
+        ), mock.patch.object(fs.os, "open", side_effect=reject_open):
+            with self.assertRaisesRegex(OSError, "capturing"):
+                fs._stage_bytes(destination, b"payload", 0o600, parent_fd=-1)
+
+        self.assertEqual(observed, [f".steward-{'a' * 32}.tmp"])
+        self.assertLessEqual(len(os.fsencode(observed[0])), 255)
+        self.assertNotIn("𠀀", observed[0])
+
     def test_frontmatter_quotes_yaml_sensitive_title_and_reads_legacy_raw_title(self) -> None:
         title = "Release: phase #1"
         created = self.create_plan(title, "--plan-id", "release-phase-one")
