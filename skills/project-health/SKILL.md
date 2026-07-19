@@ -1,6 +1,6 @@
 ---
 name: project-health
-description: "用户明确要求项目/架构健康审计，或以证据复验重要改动是否完成时使用；Use for explicit project/architecture health audits or evidence-based completion verification. 不用于简单 diff 判断、普通交付或每次编辑后的检查；Do not use for simple diff judgments, routine handoffs, or every edit."
+description: "用户明确要求只读项目/架构/安全审计，或重要改动完成复验时使用；Use for explicit read-only project, architecture, or security audits and evidence-based completion checks. 不用于简单 diff 判断、普通交付或每次编辑；Do not use for simple diff judgments, routine handoffs, or every edit."
 ---
 
 # Project Health

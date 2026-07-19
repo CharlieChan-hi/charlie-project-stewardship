@@ -310,6 +310,8 @@ class MetadataContractTests(unittest.TestCase):
 
         self.assertIn("already well-scoped execution", frontmatter["task-contract"])
         self.assertIn("complexity alone", frontmatter["task-contract"])
+        self.assertIn("current deliverable", frontmatter["task-contract"])
+        self.assertIn("conversation-only plans", frontmatter["task-contract"])
         for positive_trigger in (
             "conflicting facts/sources",
             "unclear acceptance",
@@ -318,6 +320,8 @@ class MetadataContractTests(unittest.TestCase):
         ):
             self.assertIn(positive_trigger, frontmatter["task-contract"])
         self.assertIn("simple diff judgments", frontmatter["project-health"])
+        self.assertIn("read-only project", frontmatter["project-health"])
+        self.assertIn("security audits", frontmatter["project-health"])
         self.assertIn("$project-scaffold", frontmatter["project-scaffold"])
         self.assertIn("project-bootstrap minimal", frontmatter["project-scaffold"])
         self.assertIn("$completion-guard", frontmatter["completion-guard"])
@@ -329,6 +333,12 @@ class MetadataContractTests(unittest.TestCase):
         self.assertIn("$project-bootstrap` minimal path", scaffold)
         self.assertIn("  --minimal", scaffold)
         self.assertIn("Omit `--minimal` only", scaffold)
+        self.assertIn("Never read secret-capable file contents", scaffold)
+
+        scaffold_openai = (
+            self.root / "skills" / "project-scaffold" / "agents" / "openai.yaml"
+        ).read_text(encoding="utf-8")
+        self.assertIn("metadata only", scaffold_openai)
 
     def test_skill_directory_must_match_frontmatter_name(self) -> None:
         original = self.root / "skills" / "project-health"

@@ -11,6 +11,7 @@ This compatibility entry delegates ordinary missing-context previews to the
 - Use `$project-bootstrap` semantics with `--minimal` for normal onboarding or a general missing-file preview.
 - Use this entry only when the user explicitly requests the extended scaffold or a deterministic missing-file plan.
 - Read-only or planning-only requests override all writes.
+- Never read secret-capable file contents; inspect only presence and ignore/tracking metadata.
 - Never delete, move, rename, or overwrite existing project files.
 
 Preview:
