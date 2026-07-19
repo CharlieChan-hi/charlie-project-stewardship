@@ -39,6 +39,7 @@ class MetadataContractTests(unittest.TestCase):
             self.root / ".agents" / "plugins" / "marketplace.json",
         )
         shutil.copy2(PLUGIN_ROOT / "LICENSE", self.root / "LICENSE")
+        shutil.copytree(PLUGIN_ROOT / "assets", self.root / "assets")
         shutil.copytree(PLUGIN_ROOT / "skills", self.root / "skills")
 
     def tearDown(self) -> None:
@@ -50,6 +51,17 @@ class MetadataContractTests(unittest.TestCase):
 
     def write_manifest(self, host: str, payload: dict[str, object]) -> None:
         path = self.root / f".{host}-plugin" / "plugin.json"
+        path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+    def marketplace(self) -> tuple[Path, dict[str, object]]:
+        path = self.root / ".agents" / "plugins" / "marketplace.json"
+        return path, json.loads(path.read_text(encoding="utf-8"))
+
+    def write_marketplace(self, payload: dict[str, object]) -> None:
+        path = self.root / ".agents" / "plugins" / "marketplace.json"
         path.write_text(
             json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
@@ -74,6 +86,30 @@ class MetadataContractTests(unittest.TestCase):
 
         self.assertTrue(any("same base SemVer" in item for item in errors), errors)
 
+    def test_manifest_name_must_remain_canonical(self) -> None:
+        for host in ("codex", "claude"):
+            _, manifest = self.manifest(host)
+            manifest["name"] = "renamed-project-stewardship"
+            self.write_manifest(host, manifest)
+
+        errors = validate_metadata_contracts(self.root)
+
+        self.assertTrue(any("canonical plugin name" in item for item in errors), errors)
+
+    def test_public_marketplace_has_one_canonical_entry(self) -> None:
+        _, marketplace = self.marketplace()
+        entries = marketplace["plugins"]
+        self.assertIsInstance(entries, list)
+        entries.append(entries[0])
+        self.write_marketplace(marketplace)
+
+        errors = validate_metadata_contracts(self.root)
+
+        self.assertTrue(
+            any("exactly one canonical plugin entry" in item for item in errors),
+            errors,
+        )
+
     def test_non_codex_build_suffix_and_too_many_prompts_are_rejected(self) -> None:
         _, codex = self.manifest("codex")
         codex["version"] = "1.1.0+custom.1"
@@ -84,6 +120,62 @@ class MetadataContractTests(unittest.TestCase):
 
         self.assertTrue(any("optional +codex.* suffix" in item for item in errors), errors)
         self.assertTrue(any("at most 3 prompts" in item for item in errors), errors)
+
+    def test_default_prompt_requires_at_least_one_prompt(self) -> None:
+        _, codex = self.manifest("codex")
+        codex["interface"]["defaultPrompt"] = []
+        self.write_manifest("codex", codex)
+
+        errors = validate_metadata_contracts(self.root)
+
+        self.assertTrue(any("at least 1 prompt" in item for item in errors), errors)
+
+    def test_default_prompts_must_be_non_empty(self) -> None:
+        _, codex = self.manifest("codex")
+        codex["interface"]["defaultPrompt"] = ["   "]
+        self.write_manifest("codex", codex)
+
+        errors = validate_metadata_contracts(self.root)
+
+        self.assertTrue(any("non-empty strings" in item for item in errors), errors)
+
+    def test_default_prompts_must_be_at_most_128_characters(self) -> None:
+        _, codex = self.manifest("codex")
+        codex["interface"]["defaultPrompt"] = ["x" * 129]
+        self.write_manifest("codex", codex)
+
+        errors = validate_metadata_contracts(self.root)
+
+        self.assertTrue(any("at most 128 characters" in item for item in errors), errors)
+
+    def test_codex_skills_path_must_remain_canonical(self) -> None:
+        _, codex = self.manifest("codex")
+        codex["skills"] = "skills"
+        self.write_manifest("codex", codex)
+
+        errors = validate_metadata_contracts(self.root)
+
+        self.assertTrue(any("`skills` must equal `./skills/`" in item for item in errors), errors)
+
+    def test_icon_paths_must_be_package_confined_existing_files(self) -> None:
+        _, codex = self.manifest("codex")
+        codex["interface"]["composerIcon"] = "../outside.png"
+        codex["interface"]["logo"] = "./assets/missing.png"
+        self.write_manifest("codex", codex)
+
+        errors = validate_metadata_contracts(self.root)
+
+        self.assertTrue(
+            any(
+                "composerIcon" in item and "within the plugin package" in item
+                for item in errors
+            ),
+            errors,
+        )
+        self.assertTrue(
+            any("logo" in item and "existing file" in item for item in errors),
+            errors,
+        )
 
     def test_cross_manifest_identity_mismatch_is_rejected(self) -> None:
         _, claude = self.manifest("claude")

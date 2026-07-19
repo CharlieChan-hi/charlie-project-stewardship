@@ -144,22 +144,20 @@ def _validate_public_marketplace(plugin_root: Path, errors: list[str]) -> None:
         errors.append("Public marketplace display name must remain stable.")
 
     entries = marketplace.get("plugins")
-    entry = (
-        next(
-            (
-                item
-                for item in entries
-                if isinstance(item, dict)
-                and item.get("name") == PUBLIC_MARKETPLACE_NAME
-            ),
-            None,
-        )
+    canonical_entries = (
+        [
+            item
+            for item in entries
+            if isinstance(item, dict)
+            and item.get("name") == PUBLIC_MARKETPLACE_NAME
+        ]
         if isinstance(entries, list)
-        else None
+        else []
     )
-    if entry is None:
-        errors.append("Public marketplace must contain the stewardship plugin entry.")
+    if len(canonical_entries) != 1:
+        errors.append("Public marketplace must contain exactly one canonical plugin entry.")
         return
+    entry = canonical_entries[0]
 
     expected_source = {
         "source": "url",
@@ -197,6 +195,8 @@ def _validate_public_release_metadata(
         if codex.get(field) != claude.get(field):
             errors.append(f"Manifest field `{field}` must match across Codex and Claude.")
 
+    if codex.get("name") != PUBLIC_MARKETPLACE_NAME:
+        errors.append("Plugin manifests must use the canonical plugin name.")
     if codex.get("repository") != PUBLIC_REPOSITORY:
         errors.append("Manifest repository must point to the canonical public GitHub repository.")
     if codex.get("homepage") != PUBLIC_REPOSITORY:
@@ -245,12 +245,52 @@ def validate_metadata_contracts(plugin_root: Path) -> list[str]:
     elif isinstance(claude_version, str) and codex_match.group("base") != claude_version:
         errors.append("Codex and Claude manifests must use the same base SemVer.")
 
+    if codex.get("skills") != "./skills/":
+        errors.append("Codex manifest `skills` must equal `./skills/`.")
+
     interface = codex.get("interface")
     prompts = interface.get("defaultPrompt", []) if isinstance(interface, dict) else []
     if not isinstance(prompts, list) or not all(isinstance(item, str) for item in prompts):
         errors.append("Codex interface.defaultPrompt must be a list of strings.")
-    elif len(prompts) > 3:
-        errors.append("Codex interface.defaultPrompt must contain at most 3 prompts.")
+    else:
+        if not prompts:
+            errors.append("Codex interface.defaultPrompt must contain at least 1 prompt.")
+        if len(prompts) > 3:
+            errors.append("Codex interface.defaultPrompt must contain at most 3 prompts.")
+        if any(not prompt.strip() for prompt in prompts):
+            errors.append("Codex interface.defaultPrompt entries must be non-empty strings.")
+        if any(len(prompt) > 128 for prompt in prompts):
+            errors.append(
+                "Codex interface.defaultPrompt entries must be at most 128 characters."
+            )
+
+    if isinstance(interface, dict):
+        package_root = plugin_root.resolve()
+        for field in ("composerIcon", "logo"):
+            value = interface.get(field)
+            if not isinstance(value, str) or not value.strip():
+                errors.append(
+                    f"Codex interface.{field} must name an existing file within the plugin package."
+                )
+                continue
+            relative_path = Path(value)
+            if relative_path.is_absolute():
+                errors.append(
+                    f"Codex interface.{field} must stay within the plugin package."
+                )
+                continue
+            icon_path = (package_root / relative_path).resolve()
+            try:
+                icon_path.relative_to(package_root)
+            except ValueError:
+                errors.append(
+                    f"Codex interface.{field} must stay within the plugin package."
+                )
+                continue
+            if not icon_path.is_file():
+                errors.append(
+                    f"Codex interface.{field} must reference an existing file."
+                )
 
     skill_dirs = sorted(
         path
