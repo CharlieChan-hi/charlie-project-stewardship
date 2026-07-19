@@ -24,7 +24,7 @@ Missing optional docs do not block ordinary work.
 
 - **Scope:** Preserve user changes and unrelated work; change only the requested surface.
 - **Secrets:** Do not read, expose, or persist real secrets; inspect `.env*` only for presence and ignore coverage.
-- **High-impact actions:** Confirm destructive, shared-state, install, migration, permission, publish, or deploy effects before acting.
+- **High-impact actions:** Obtain the user's confirmation before destructive or shared-state changes, installs, migrations, permission changes, publishing, or deployment.
 - **Validation:** Inspect relevant code and scripts, run proportionate checks, and report evidence plus gaps.
 
 ## Durable memory

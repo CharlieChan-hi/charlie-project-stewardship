@@ -250,14 +250,21 @@ class DocumentationContractTests(unittest.TestCase):
             sum(line.startswith("- **") for line in invariants.splitlines()),
             4,
         )
+        self.assertIn(
+            "- **High-impact actions:** Obtain the user's confirmation before "
+            "destructive or shared-state changes, installs, migrations, permission "
+            "changes, publishing, or deployment.",
+            invariants.splitlines(),
+        )
 
         self.assertIn("## Open questions", intake)
+        preference_lines = preferences.splitlines()
         for heading in (
             "## Confirmed rules",
             "## Structured rules",
             "## Pending confirmation",
         ):
-            self.assertIn(heading, preferences)
+            self.assertEqual(preference_lines.count(heading), 1)
         for field in (
             "Rule ID:",
             "Kind:",
