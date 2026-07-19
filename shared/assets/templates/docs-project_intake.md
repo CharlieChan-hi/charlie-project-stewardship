@@ -1,6 +1,6 @@
 # Project Intake
 
-## Confirmed summary
+## Project snapshot
 
 - Project name: [[project_name]]
 - Product goal: [[product_goal]]
@@ -11,13 +11,11 @@
 - Package manager: [[package_manager]]
 - Preferred source structure recipe: [[source_structure_recipe]]
 
-Detected values are evidence to confirm, not mandatory choices.
+Detected fields remain provisional until confirmed against the project.
 
 ## UI / platform contract
 
 [[ui_system]]
-
-Record scope, source of truth, compatibility target, allowed exceptions, and validation expectation. For fast-moving platforms, verify current official guidance before making a consequential choice; preserve the existing design system unless a change is confirmed.
 
 ## Architecture preferences
 
@@ -31,12 +29,11 @@ Record scope, source of truth, compatibility target, allowed exceptions, and val
 
 [[validation_expectations]]
 
-## Capability suggestions
+## Project capability notes
 
 [[capability_suggestions]]
 
-Suggestions are optional and must be checked against capabilities actually exposed in the current session.
-
 ## Open questions
 
-Keep only questions whose answers materially affect product scope, architecture, authorization, or validation. Do not initialize an optional task system, apply a source recipe, or install a dependency from this intake unless the user explicitly requests that separate action.
+- Which `[需确认]` values above would change product scope, architecture, authorization, or acceptance?
+- What compatibility targets or allowed exceptions remain unresolved?

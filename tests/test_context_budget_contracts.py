@@ -15,7 +15,7 @@ MINIMAL_TEMPLATES = tuple(
     )
 )
 MAX_SKILL_FRONTMATTER_BYTES = 3300
-FROZEN_MINIMAL_TEMPLATE_LINES = 142
+MAX_MINIMAL_TEMPLATE_LINES = 105
 
 
 def frontmatter_bytes(path: Path) -> int:
@@ -34,12 +34,12 @@ class ContextBudgetContractTests(unittest.TestCase):
         total = sum(frontmatter_bytes(path) for path in SKILL_FILES)
         self.assertLessEqual(total, MAX_SKILL_FRONTMATTER_BYTES)
 
-    def test_minimal_templates_match_frozen_a_baseline(self) -> None:
+    def test_minimal_templates_stay_within_budget(self) -> None:
         total_lines = sum(
             len(path.read_text(encoding="utf-8").splitlines())
             for path in MINIMAL_TEMPLATES
         )
-        self.assertEqual(total_lines, FROZEN_MINIMAL_TEMPLATE_LINES)
+        self.assertLessEqual(total_lines, MAX_MINIMAL_TEMPLATE_LINES)
 
 
 if __name__ == "__main__":

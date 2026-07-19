@@ -9,6 +9,7 @@ from pathlib import Path
 
 PLUGIN_ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = PLUGIN_ROOT / "shared" / "scripts"
+TEMPLATES_DIR = PLUGIN_ROOT / "shared" / "assets" / "templates"
 
 
 class DocumentationContractTests(unittest.TestCase):
@@ -180,6 +181,14 @@ class DocumentationContractTests(unittest.TestCase):
             encoding="utf-8"
         )
         combined = "\n".join((agents, intake, preferences))
+        self.assertEqual(
+            sorted(
+                path.relative_to(self.root).as_posix()
+                for path in self.root.rglob("*")
+                if path.is_file()
+            ),
+            ["AGENTS.md", "docs/project_intake.md", "docs/project_preferences.md"],
+        )
         for product_name in ("Beads", "Serena", "RTK"):
             self.assertNotIn(product_name, combined)
         self.assertIn("## Forbidden patterns\n\n[需确认]", intake)
@@ -187,8 +196,96 @@ class DocumentationContractTests(unittest.TestCase):
             "## Structured rules", 1
         )[0]
         self.assertIn("No confirmed rules recorded yet", confirmed)
-        self.assertIn("## Bootstrap guidance (not user-confirmed)", preferences)
+        self.assertNotIn("## Bootstrap guidance (not user-confirmed)", preferences)
         self.assertNotIn("Follow the project's current conventions", confirmed)
+
+    def test_minimal_template_contracts_preserve_project_facts_only(self) -> None:
+        agents = (TEMPLATES_DIR / "AGENTS.md").read_text(encoding="utf-8")
+        intake = (TEMPLATES_DIR / "docs-project_intake.md").read_text(
+            encoding="utf-8"
+        )
+        preferences = (TEMPLATES_DIR / "docs-project_preferences.md").read_text(
+            encoding="utf-8"
+        )
+        combined = "\n".join((agents, intake, preferences))
+
+        expected_placeholders = {
+            "AGENTS.md": ("project_type", "stack_markers", "package_manager"),
+            "docs-project_intake.md": (
+                "project_name",
+                "product_goal",
+                "target_users",
+                "platform",
+                "project_type",
+                "stack_markers",
+                "package_manager",
+                "source_structure_recipe",
+                "ui_system",
+                "architecture_preferences",
+                "forbidden_patterns",
+                "validation_expectations",
+                "capability_suggestions",
+            ),
+        }
+        template_text = {
+            "AGENTS.md": agents,
+            "docs-project_intake.md": intake,
+        }
+        for template_name, placeholders in expected_placeholders.items():
+            with self.subTest(template=template_name):
+                for placeholder in placeholders:
+                    self.assertIn(f"[[{placeholder}]]", template_text[template_name])
+
+        self.assertIn("## Project snapshot", agents)
+        self.assertIn("## Task-scoped map", agents)
+        invariants = agents.split("## Invariants", 1)[1].split("\n## ", 1)[0]
+        for invariant_class in (
+            "**Scope:**",
+            "**Secrets:**",
+            "**High-impact actions:**",
+            "**Validation:**",
+        ):
+            self.assertIn(invariant_class, invariants)
+        self.assertEqual(
+            sum(line.startswith("- **") for line in invariants.splitlines()),
+            4,
+        )
+
+        self.assertIn("## Open questions", intake)
+        for heading in (
+            "## Confirmed rules",
+            "## Structured rules",
+            "## Pending confirmation",
+        ):
+            self.assertIn(heading, preferences)
+        for field in (
+            "Rule ID:",
+            "Kind:",
+            "Rule:",
+            "Category:",
+            "Scope:",
+            "Priority:",
+            "Source or evidence:",
+            "Exceptions:",
+            "Detection:",
+            "Validation:",
+            "Last verified:",
+            "Expiry:",
+            "Invalidation:",
+        ):
+            self.assertIn(field, preferences)
+
+        for generic_coaching in (
+            "## Bootstrap guidance (not user-confirmed)",
+            "### Agent behavior guidance",
+            "### Optional integrations",
+            "## Optional capabilities",
+            "Follow the project's current conventions",
+            "current official guidance",
+            "Never claim completion from assumptions",
+            "Suggestions are optional",
+        ):
+            self.assertNotIn(generic_coaching, combined)
 
 
 if __name__ == "__main__":
