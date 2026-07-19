@@ -177,6 +177,56 @@ class MetadataContractTests(unittest.TestCase):
             errors,
         )
 
+    def test_icon_paths_reject_nul_and_oversized_components_without_crashing(self) -> None:
+        _, codex = self.manifest("codex")
+        codex["interface"]["composerIcon"] = "./assets/\0.png"
+        codex["interface"]["logo"] = "./assets/" + ("x" * 5000) + ".png"
+        self.write_manifest("codex", codex)
+
+        errors = validate_metadata_contracts(self.root)
+
+        for field in ("composerIcon", "logo"):
+            self.assertTrue(
+                any(field in item and "valid package-relative" in item for item in errors),
+                errors,
+            )
+
+    def test_icon_paths_reject_overdeep_paths_without_crashing(self) -> None:
+        _, codex = self.manifest("codex")
+        codex["interface"]["composerIcon"] = "./assets/" + "/".join(
+            "part" for _ in range(1000)
+        )
+        self.write_manifest("codex", codex)
+
+        errors = validate_metadata_contracts(self.root)
+
+        self.assertTrue(
+            any(
+                "composerIcon" in item and "valid package-relative" in item
+                for item in errors
+            ),
+            errors,
+        )
+
+    def test_icon_paths_reject_symlink_loops_without_crashing(self) -> None:
+        first = self.root / "assets" / "loop-a"
+        second = self.root / "assets" / "loop-b"
+        first.symlink_to(second.name)
+        second.symlink_to(first.name)
+        _, codex = self.manifest("codex")
+        codex["interface"]["composerIcon"] = "./assets/loop-a/icon.png"
+        self.write_manifest("codex", codex)
+
+        errors = validate_metadata_contracts(self.root)
+
+        self.assertTrue(
+            any(
+                "composerIcon" in item and "valid package-relative" in item
+                for item in errors
+            ),
+            errors,
+        )
+
     def test_cross_manifest_identity_mismatch_is_rejected(self) -> None:
         _, claude = self.manifest("claude")
         claude["description"] = "Drifted description"
@@ -244,6 +294,41 @@ class MetadataContractTests(unittest.TestCase):
 
         self.assertTrue(any("Core skill `task-contract`" in item for item in errors), errors)
         self.assertTrue(any("`architecture-audit` must be explicit-only" in item for item in errors), errors)
+
+    def test_skill_discovery_text_preserves_negative_and_bridge_boundaries(self) -> None:
+        frontmatter = {}
+        for skill_name in (
+            "task-contract",
+            "project-health",
+            "project-scaffold",
+            "completion-guard",
+        ):
+            text = (self.root / "skills" / skill_name / "SKILL.md").read_text(
+                encoding="utf-8"
+            )
+            frontmatter[skill_name] = text.split("\n---\n", 1)[0]
+
+        self.assertIn("already well-scoped execution", frontmatter["task-contract"])
+        self.assertIn("complexity alone", frontmatter["task-contract"])
+        for positive_trigger in (
+            "conflicting facts/sources",
+            "unclear acceptance",
+            "batch review",
+            "material authority/scope drift",
+        ):
+            self.assertIn(positive_trigger, frontmatter["task-contract"])
+        self.assertIn("simple diff judgments", frontmatter["project-health"])
+        self.assertIn("$project-scaffold", frontmatter["project-scaffold"])
+        self.assertIn("project-bootstrap minimal", frontmatter["project-scaffold"])
+        self.assertIn("$completion-guard", frontmatter["completion-guard"])
+        self.assertIn("project-health", frontmatter["completion-guard"])
+
+        scaffold = (self.root / "skills" / "project-scaffold" / "SKILL.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("$project-bootstrap` minimal path", scaffold)
+        self.assertIn("  --minimal", scaffold)
+        self.assertIn("Omit `--minimal` only", scaffold)
 
     def test_skill_directory_must_match_frontmatter_name(self) -> None:
         original = self.root / "skills" / "project-health"

@@ -1,6 +1,6 @@
 ---
 name: completion-guard
-description: "用户明确要求交付前证据检查时使用；Use for explicit pre-completion evidence checks. 不用于每次编辑后的自动检查；Do not run automatically after routine edits."
+description: "用户明确调用 $completion-guard 做交付证据检查时，转到 project-health completion；Use for explicit legacy completion checks routed to project-health. 不用于每次编辑后的自动检查；Do not run after routine edits."
 ---
 
 # Completion Guard

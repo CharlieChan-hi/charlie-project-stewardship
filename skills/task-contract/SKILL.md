@@ -1,6 +1,6 @@
 ---
 name: task-contract
-description: "当事实或来源冲突、验收不清、需分批审阅，或授权/范围可能实质漂移时使用任务契约；Use for conflicting facts/sources, unclear acceptance, batch review, or material authority/scope drift. 不用于边界清晰的普通编辑或回答；Do not use for routine well-scoped edits or answers."
+description: "事实/来源冲突、验收不清、需分批审阅，或有授权/范围实质漂移证据时使用；Use for conflicting facts/sources, unclear acceptance, batch review, or evidenced material authority/scope drift. 不用于边界清晰的执行、持久计划或仅因复杂；Do not use for already well-scoped execution, routine edits/answers, durable plans, or complexity alone."
 ---
 
 # Task Contract
@@ -17,7 +17,7 @@ Create the smallest execution envelope that prevents scope drift and makes compl
 
 ## Choose the contract depth
 
-Use a full contract when facts or sources conflict, acceptance is ambiguous, review must happen in batches, or authority or scope could materially drift. Use a compact contract for one or two material ambiguities. Do not create process overhead for an ordinary local edit or direct answer.
+Use a full contract when facts or sources conflict, acceptance is ambiguous, review must happen in batches, or evidence shows material authority or scope drift. Use a compact contract for one or two material ambiguities. Do not create process overhead for already well-scoped execution, an ordinary local edit, a direct answer, or a durable plan owned by `$plan-relay`.
 
 ## Build the contract
 

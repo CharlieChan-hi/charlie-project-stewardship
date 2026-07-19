@@ -35,7 +35,7 @@ Charlie Project Stewardship 是一个以 Codex 为主要宿主的轻量项目治
 
 | Skill | 何时使用 | 主要产物 | 默认写入 |
 |:---|:---|:---|:---|
-| `task-contract` | 当前任务复杂、高影响或容易漂移 | 目标、范围、事实源、非目标、验收证据和停止条件 | 否，默认留在对话中 |
+| `task-contract` | 事实/来源冲突、验收不清、需分批审阅或任务边界尚未明确 | 目标、范围、事实源、非目标、验收证据和停止条件 | 否，默认留在对话中 |
 | `project-bootstrap` | 明确要求初始化或接手仓库 | 最小项目地图，或非覆盖式创建建议 | 否，先检查或预览 |
 | `project-memory` | 明确要求保存已确认、未来仍有用的知识 | 带范围、证据和失效条件的项目规则 | 是，但必须明确要求 |
 | `plan-relay` | 明确要求跨会话、崩溃或设备恢复长任务 | 带稳定计划与步骤 ID 的仓库内状态 | 是；跨设备还需另行授权 Git 同步 |
@@ -91,7 +91,7 @@ codex plugin add charlie-project-stewardship@charlie-project-stewardship --json
 ```
 
 ```text
-使用 $task-contract 把这个复杂请求整理成最小任务契约，
+使用 $task-contract 把这个事实源冲突或验收不清的请求整理成最小任务契约，
 明确目标、范围、事实源、非目标、验收证据和停止条件，不写文件。
 ```
 

@@ -252,10 +252,26 @@ class DocumentationContractTests(unittest.TestCase):
         )
         self.assertIn(
             "- **High-impact actions:** Obtain the user's confirmation before "
-            "destructive or shared-state changes, installs, migrations, permission "
-            "changes, publishing, or deployment.",
+            "destructive or hard-to-reverse actions, external/shared-state changes, "
+            "installs/upgrades, migrations, permission changes, publishing, or "
+            "deployment.",
             invariants.splitlines(),
         )
+        high_impact = next(
+            line
+            for line in invariants.splitlines()
+            if line.startswith("- **High-impact actions:**")
+        )
+        for protected_boundary in (
+            "hard-to-reverse",
+            "external/shared-state",
+            "installs/upgrades",
+            "migrations",
+            "permission changes",
+            "publishing",
+            "deployment",
+        ):
+            self.assertIn(protected_boundary, high_impact)
 
         self.assertIn("## Open questions", intake)
         preference_lines = preferences.splitlines()

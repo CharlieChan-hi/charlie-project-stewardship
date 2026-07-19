@@ -52,6 +52,8 @@ EXPLICIT_ONLY_SKILLS = {
 }
 PUBLIC_REPOSITORY = "https://github.com/CharlieChan-hi/charlie-project-stewardship"
 PUBLIC_MARKETPLACE_NAME = "charlie-project-stewardship"
+MAX_PACKAGE_PATH_BYTES = 4096
+MAX_PACKAGE_PATH_COMPONENT_BYTES = 255
 
 
 def system_skill_script(*parts: str) -> str:
@@ -273,21 +275,53 @@ def validate_metadata_contracts(plugin_root: Path) -> list[str]:
                     f"Codex interface.{field} must name an existing file within the plugin package."
                 )
                 continue
-            relative_path = Path(value)
+            try:
+                encoded_value = os.fsencode(value)
+                relative_path = Path(value)
+                component_too_long = any(
+                    len(os.fsencode(part)) > MAX_PACKAGE_PATH_COMPONENT_BYTES
+                    for part in relative_path.parts
+                )
+            except (OSError, UnicodeError, ValueError):
+                errors.append(
+                    f"Codex interface.{field} must use a valid package-relative file path."
+                )
+                continue
+            if (
+                "\0" in value
+                or len(encoded_value) > MAX_PACKAGE_PATH_BYTES
+                or component_too_long
+            ):
+                errors.append(
+                    f"Codex interface.{field} must use a valid package-relative file path."
+                )
+                continue
             if relative_path.is_absolute():
                 errors.append(
                     f"Codex interface.{field} must stay within the plugin package."
                 )
                 continue
-            icon_path = (package_root / relative_path).resolve()
             try:
+                icon_path = (package_root / relative_path).resolve()
                 icon_path.relative_to(package_root)
             except ValueError:
                 errors.append(
                     f"Codex interface.{field} must stay within the plugin package."
                 )
                 continue
-            if not icon_path.is_file():
+            except (OSError, RuntimeError):
+                errors.append(
+                    f"Codex interface.{field} must use a valid package-relative file path."
+                )
+                continue
+            try:
+                icon_is_file = icon_path.is_file()
+            except (OSError, RuntimeError, ValueError):
+                errors.append(
+                    f"Codex interface.{field} must use a valid package-relative file path."
+                )
+                continue
+            if not icon_is_file:
                 errors.append(
                     f"Codex interface.{field} must reference an existing file."
                 )
