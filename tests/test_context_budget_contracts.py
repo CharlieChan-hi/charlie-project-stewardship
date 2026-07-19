@@ -14,7 +14,7 @@ MINIMAL_TEMPLATES = tuple(
         "docs-project_preferences.md",
     )
 )
-FROZEN_SKILL_FRONTMATTER_BYTES = 4125
+MAX_SKILL_FRONTMATTER_BYTES = 3300
 FROZEN_MINIMAL_TEMPLATE_LINES = 142
 
 
@@ -30,9 +30,9 @@ def frontmatter_bytes(path: Path) -> int:
 
 
 class ContextBudgetContractTests(unittest.TestCase):
-    def test_skill_catalog_frontmatter_matches_frozen_a_baseline(self) -> None:
+    def test_skill_catalog_frontmatter_stays_within_budget(self) -> None:
         total = sum(frontmatter_bytes(path) for path in SKILL_FILES)
-        self.assertEqual(total, FROZEN_SKILL_FRONTMATTER_BYTES)
+        self.assertLessEqual(total, MAX_SKILL_FRONTMATTER_BYTES)
 
     def test_minimal_templates_match_frozen_a_baseline(self) -> None:
         total_lines = sum(

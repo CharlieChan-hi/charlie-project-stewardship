@@ -1,6 +1,6 @@
 ---
 name: project-scaffold
-description: "兼容旧入口：当用户明确要求运行现有非覆盖式 scaffold、补缺失治理文件或生成全量文档计划时用。Compatibility entry for explicit deterministic scaffolding. Do not use as the default new-project path or for ordinary coding work."
+description: "用户明确要求非覆盖式 scaffold 或缺失文件计划时使用；Use for explicit non-overwriting scaffolding or missing-file plans. 不用于普通编码；Do not use for routine coding."
 ---
 
 # Project Scaffold

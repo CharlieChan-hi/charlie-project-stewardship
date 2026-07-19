@@ -1,6 +1,6 @@
 ---
 name: completion-guard
-description: "兼容旧入口：当用户明确调用旧 completion guard 或要求在重要改动交付前检查证据时，转到 project-health 的 completion 模式。Compatibility entry for explicit pre-completion evidence checks. Do not run automatically after every edit."
+description: "用户明确要求交付前证据检查时使用；Use for explicit pre-completion evidence checks. 不用于每次编辑后的自动检查；Do not run automatically after routine edits."
 ---
 
 # Completion Guard

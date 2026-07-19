@@ -1,6 +1,6 @@
 ---
 name: project-health
-description: "为用户明确要求的项目健康或架构审计、交付前完成证据检查提供只读扫描和风险相称的验证选择。Use when the user explicitly asks for a project or architecture health audit, or for completion verification before handoff. Do not invoke automatically after edits, for routine handoffs, or instead of project-native runtime or security checks."
+description: "用户要求项目/架构健康审计或交付前完成验证时使用；Use for requested project/architecture health audits or pre-handoff completion verification. 不用于普通交付；Do not use for routine handoffs."
 ---
 
 # Project Health

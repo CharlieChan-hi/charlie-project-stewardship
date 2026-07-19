@@ -1,6 +1,6 @@
 ---
 name: start-here
-description: "兼容旧入口：当用户明确调用 $start-here、第一次使用插件或不知道从哪个核心 Skill 开始时，转到最小项目开工路径。Compatibility entry for first-time use or explicit $start-here requests. Do not invoke implicitly for ordinary project work."
+description: "用户明确调用 $start-here、首次使用插件或需要核心 Skill 导航时使用；Use for explicit $start-here requests, first-time use, or core Skill routing. 不用于普通项目工作；Do not use for routine project work."
 ---
 
 # Start Here

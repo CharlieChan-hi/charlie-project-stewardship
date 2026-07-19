@@ -1,6 +1,6 @@
 ---
 name: task-contract
-description: "把复杂、跨载体、高影响或边界容易漂移的请求转成可执行的任务契约，明确目标、授权范围、事实源、非目标、验收证据、分批策略与停止条件。Use when work is multi-step, high-impact, ambiguity-sensitive, batch-reviewed, or spans multiple sources of truth and a bounded execution envelope would materially reduce rework. Do not use for simple scoped edits, ordinary answers, durable cross-session plans, or as permission to expand the user's authority."
+description: "当事实或来源冲突、验收不清、需分批审阅，或授权/范围可能实质漂移时使用任务契约；Use for conflicting facts/sources, unclear acceptance, batch review, or material authority/scope drift. 不用于边界清晰的普通编辑或回答；Do not use for routine well-scoped edits or answers."
 ---
 
 # Task Contract
@@ -17,7 +17,7 @@ Create the smallest execution envelope that prevents scope drift and makes compl
 
 ## Choose the contract depth
 
-Use a full contract when multiple sources must agree, the work is high-impact, acceptance is ambiguous, review must happen in batches, or several agents/steps could drift. Use a compact contract for one or two material ambiguities. Do not create process overhead for an ordinary local edit or direct answer.
+Use a full contract when facts or sources conflict, acceptance is ambiguous, review must happen in batches, or authority or scope could materially drift. Use a compact contract for one or two material ambiguities. Do not create process overhead for an ordinary local edit or direct answer.
 
 ## Build the contract
 

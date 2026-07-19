@@ -1,6 +1,6 @@
 ---
 name: capability-routing
-description: "兼容旧入口：当用户明确要审计或更新项目的工具/Skill 路由表时，探测当前会话真实能力并记录最小路由。Compatibility entry for explicit capability-map maintenance. Do not invoke for routine implementation or install tools automatically."
+description: "用户明确要求审计或更新工具/Skill 路由表时使用；Use for explicit capability-map maintenance. 不用于日常实现或自动安装工具；Do not use for routine work or automatic tool installation."
 ---
 
 # Capability Routing

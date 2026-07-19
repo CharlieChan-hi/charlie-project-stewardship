@@ -1,6 +1,6 @@
 ---
 name: architecture-audit
-description: "兼容旧入口：当用户明确要求只读架构审计、面条代码排查或结构体检时，转到 project-health 的 audit 模式。Compatibility entry for explicit read-only architecture audits. Do not use as an automatic gate or to write refactors."
+description: "用户明确要求只读架构审计或结构体检时使用；Use for explicit read-only architecture audits. 不用于自动门禁或写重构；Do not use for automatic gates or refactor writes."
 ---
 
 # Architecture Audit

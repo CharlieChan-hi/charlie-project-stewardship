@@ -1,6 +1,6 @@
 ---
 name: plan-relay
-description: "为用户明确要求持久化、恢复或跨崩溃、会话、设备接力的多步骤计划保存仓库内状态。Use only when the user explicitly requests durable plan persistence, recovery, or cross-session/device handoff. Do not use for one-session plans, brainstorming, or ordinary task tracking."
+description: "用户明确要求计划持久化、恢复或跨会话/设备接力时使用；Use for explicit durable plan persistence, recovery, or cross-session/device handoff. 不用于单会话计划；Do not use for one-session plans."
 ---
 
 # Plan Relay

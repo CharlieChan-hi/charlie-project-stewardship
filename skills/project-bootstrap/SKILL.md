@@ -1,6 +1,6 @@
 ---
 name: project-bootstrap
-description: "为用户明确要求的新项目初始化、现有仓库接手或最小 Agent 上下文建设建立非覆盖式项目地图。Use only when the user explicitly asks to bootstrap, onboard, or adopt a repository, or to create its minimal project context. Do not trigger for ordinary implementation, merely because governance files are absent, or for architecture/tool setup."
+description: "用户明确要求新项目初始化、仓库接手或最小项目上下文时使用；Use for explicit project bootstrap, repository onboarding/adoption, or minimal context. 不用于普通实现；Do not use for routine implementation."
 ---
 
 # Project Bootstrap

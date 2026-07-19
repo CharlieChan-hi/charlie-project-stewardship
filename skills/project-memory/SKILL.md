@@ -1,6 +1,6 @@
 ---
 name: project-memory
-description: "仅在用户明确要求“跨会话记住、持久保存或写入项目记忆”时，把已确认规则、经验证经验或明确标记为待确认的候选写入仓库。Use only when the user explicitly asks to persist a durable project rule, verified reusable learning, or an explicitly pending candidate for future sessions. Do not trigger for current-task constraints, temporary state, inferred conventions, chat summaries, or secrets."
+description: "用户明确要求跨会话保存项目规则、已验证经验或待确认候选时使用；Use for explicit durable project memory. 不用于当前任务状态或 secrets；Do not use for temporary task state or secrets."
 ---
 
 # Project Memory

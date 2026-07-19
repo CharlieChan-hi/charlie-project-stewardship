@@ -1,6 +1,6 @@
 ---
 name: project-intake
-description: "兼容旧入口：仅在用户明确要收集/补齐产品目标、用户、平台、约束或验证期望时生成项目准入问卷。Compatibility entry for an explicit project-intake questionnaire. Do not use for general feature discovery, full scaffolding, or architecture review."
+description: "用户明确要求收集产品目标、用户、平台、约束或验证期望时使用；Use for an explicit project-intake questionnaire. 不用于一般功能发现；Do not use for general feature discovery."
 ---
 
 # Project Intake
