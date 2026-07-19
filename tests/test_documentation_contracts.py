@@ -122,6 +122,17 @@ class DocumentationContractTests(unittest.TestCase):
         ):
             self.assertIn(field, template_text)
 
+    def test_plan_relay_continue_persists_recovery_state(self) -> None:
+        text = (
+            PLUGIN_ROOT / "skills" / "plan-relay" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("explicit continue or recover request", text)
+        self.assertIn("do not stop after `status`", text)
+        self.assertIn("mark the recovered next step `in-progress`", text)
+        self.assertIn("record a blocking note", text)
+        self.assertIn("explicitly requests a read-only recovery", text)
+
     def test_planning_templates_do_not_claim_audit_writes(self) -> None:
         for name in ("architecture-refactor-plan.md", "architecture-target-plan.md"):
             text = (

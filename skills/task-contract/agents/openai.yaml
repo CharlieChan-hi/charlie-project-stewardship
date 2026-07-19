@@ -3,4 +3,4 @@ interface:
   short_description: "Define executable scope, evidence, and stop conditions"
   default_prompt: "Use $task-contract to turn this request into a bounded execution contract with acceptance evidence."
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

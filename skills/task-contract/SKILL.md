@@ -1,6 +1,6 @@
 ---
 name: task-contract
-description: "事实/来源冲突、当前交付验收不清、分批审阅或授权/范围实质漂移时使用；Use for conflicting facts/sources, unclear acceptance of the current deliverable, batch review, or material authority/scope drift. 不用于边界清晰的执行、对话内短计划、持久计划或仅因复杂；Not for already well-scoped execution, conversation-only plans, durable plans, or complexity alone."
+description: "仅在用户显式调用 `$task-contract` 时，将当前请求整理为有界执行契约，明确范围、事实源、验收证据和停止条件；不要从复杂度、来源冲突或缺失细节中自动推断。Use only when the user explicitly invokes `$task-contract` to define a bounded execution envelope with scope, sources of truth, acceptance evidence, and stop conditions. Never infer this workflow from complexity, conflicting sources, or missing implementation details."
 ---
 
 # Task Contract
@@ -10,6 +10,7 @@ Create the smallest execution envelope that prevents scope drift and makes compl
 ## Boundaries
 
 - Let read-only, diagnosis-only, or planning-only intent override every write or external action.
+- If a specialist Skill already owns the requested bootstrap, health, memory, or plan workflow, do not layer a task contract unless the user explicitly requests one or a material blocker prevents that workflow from completing.
 - Return the contract in conversation by default. Persist it only when the user explicitly requests persistence and authorizes the destination.
 - Preserve the user's authority boundary: recording an action in the contract does not authorize it.
 - Skip the full form for a simple, already-scoped request; restate only the material boundary if useful.

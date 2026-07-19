@@ -20,6 +20,8 @@ Keep one repository file per explicitly persistent plan. Use the host's normal p
 
 Pass a stable machine label, and use exact plan and step IDs returned by `status`:
 
+For an explicit continue or recover request, do not stop after `status`. Unless the user explicitly requests a read-only recovery, mark the recovered next step `in-progress` with current evidence, or record a blocking note when progress cannot begin. Persist only that scoped plan update.
+
 ```bash
 python3 <skill-dir>/../../shared/scripts/project_steward_plan.py \
   --project-root <project-root> --machine <label> \

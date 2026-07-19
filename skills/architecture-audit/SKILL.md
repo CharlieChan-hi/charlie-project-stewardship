@@ -1,6 +1,6 @@
 ---
 name: architecture-audit
-description: "用户明确要求只读架构审计或结构体检时使用；Use for explicit read-only architecture audits. 不用于自动门禁或写重构；Do not use for automatic gates or refactor writes."
+description: "显式 $architecture-audit：只读架构审查；Explicit read-only architecture audit. 不自动门禁或写重构；No automatic gates/refactor writes."
 ---
 
 # Architecture Audit

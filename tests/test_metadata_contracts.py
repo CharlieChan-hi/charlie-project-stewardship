@@ -271,11 +271,21 @@ class MetadataContractTests(unittest.TestCase):
         self.assertTrue(any("$project-health" in item for item in errors), errors)
 
     def test_implicit_routing_contract_is_enforced(self) -> None:
-        core = self.root / "skills" / "task-contract" / "agents" / "openai.yaml"
+        core = self.root / "skills" / "plan-relay" / "agents" / "openai.yaml"
         core.write_text(
             core.read_text(encoding="utf-8").replace(
                 "allow_implicit_invocation: true",
                 "allow_implicit_invocation: false",
+            ),
+            encoding="utf-8",
+        )
+        task_contract = (
+            self.root / "skills" / "task-contract" / "agents" / "openai.yaml"
+        )
+        task_contract.write_text(
+            task_contract.read_text(encoding="utf-8").replace(
+                "allow_implicit_invocation: false",
+                "allow_implicit_invocation: true",
             ),
             encoding="utf-8",
         )
@@ -292,33 +302,41 @@ class MetadataContractTests(unittest.TestCase):
 
         errors = validate_metadata_contracts(self.root)
 
-        self.assertTrue(any("Core skill `task-contract`" in item for item in errors), errors)
+        self.assertTrue(any("Core skill `plan-relay`" in item for item in errors), errors)
+        self.assertTrue(any("`task-contract` must be explicit-only" in item for item in errors), errors)
         self.assertTrue(any("`architecture-audit` must be explicit-only" in item for item in errors), errors)
 
-    def test_skill_discovery_text_preserves_negative_and_bridge_boundaries(self) -> None:
+    def test_skill_discovery_text_preserves_routing_and_bridge_boundaries(self) -> None:
         frontmatter = {}
         for skill_name in (
             "task-contract",
+            "project-bootstrap",
             "project-health",
             "project-scaffold",
             "completion-guard",
+            "architecture-audit",
+            "project-intake",
         ):
             text = (self.root / "skills" / skill_name / "SKILL.md").read_text(
                 encoding="utf-8"
             )
             frontmatter[skill_name] = text.split("\n---\n", 1)[0]
 
-        self.assertIn("already well-scoped execution", frontmatter["task-contract"])
-        self.assertIn("complexity alone", frontmatter["task-contract"])
-        self.assertIn("current deliverable", frontmatter["task-contract"])
-        self.assertIn("conversation-only plans", frontmatter["task-contract"])
-        for positive_trigger in (
-            "conflicting facts/sources",
-            "unclear acceptance",
-            "batch review",
-            "material authority/scope drift",
-        ):
-            self.assertIn(positive_trigger, frontmatter["task-contract"])
+        self.assertIn("bounded execution envelope", frontmatter["task-contract"])
+        self.assertIn("explicitly invokes `$task-contract`", frontmatter["task-contract"])
+        self.assertIn("Use only when", frontmatter["task-contract"])
+        self.assertIn("Never infer this workflow", frontmatter["task-contract"])
+        self.assertNotIn("multi-step", frontmatter["task-contract"])
+        self.assertNotIn("high-impact", frontmatter["task-contract"])
+        self.assertNotIn("conversation-only", frontmatter["task-contract"])
+        self.assertNotIn("durable-plan", frontmatter["task-contract"])
+        self.assertNotIn("plan workflows", frontmatter["task-contract"])
+        self.assertNotIn("no specialist Skill owns", frontmatter["task-contract"])
+        for alias in ("$start-here", "$project-intake", "$project-scaffold"):
+            self.assertIn(alias, frontmatter["project-bootstrap"])
+        self.assertIn("missing-context preview", frontmatter["project-bootstrap"])
+        self.assertIn("$architecture-audit", frontmatter["architecture-audit"])
+        self.assertIn("$project-intake", frontmatter["project-intake"])
         self.assertIn("simple diff judgments", frontmatter["project-health"])
         self.assertIn("read-only project", frontmatter["project-health"])
         self.assertIn("security audits", frontmatter["project-health"])
@@ -326,6 +344,18 @@ class MetadataContractTests(unittest.TestCase):
         self.assertIn("project-bootstrap minimal", frontmatter["project-scaffold"])
         self.assertIn("$completion-guard", frontmatter["completion-guard"])
         self.assertIn("project-health", frontmatter["completion-guard"])
+
+        task_contract = (
+            self.root / "skills" / "task-contract" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("ordinary conversation-only plan", task_contract)
+        self.assertIn("specialist Skill already owns", task_contract)
+
+        bootstrap = (
+            self.root / "skills" / "project-bootstrap" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("host exposes only core Skills", bootstrap)
+        self.assertIn("minimal three-file scaffold", bootstrap)
 
         scaffold = (self.root / "skills" / "project-scaffold" / "SKILL.md").read_text(
             encoding="utf-8"

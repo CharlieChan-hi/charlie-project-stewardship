@@ -1,6 +1,6 @@
 ---
 name: project-bootstrap
-description: "用户明确要求新项目初始化、仓库接手或最小项目上下文时使用；Use for explicit project bootstrap, repository onboarding/adoption, or minimal context. 不用于普通实现；Do not use for routine implementation."
+description: "新项目初始化、仓库接手、缺失上下文预览，或显式 $start-here/$project-intake/$project-scaffold；Explicit bootstrap/onboarding, missing-context preview, or these alias bridges. 非普通实现；Not routine work."
 ---
 
 # Project Bootstrap
@@ -22,6 +22,12 @@ Create the smallest useful project map for an explicit bootstrap or adoption req
 4. **Source recipe** only when requested or when a confirmed stack has a real unresolved layout need.
 
 Do not block ordinary work merely because optional stewardship files are absent.
+
+When a host exposes only core Skills, preserve explicit compatibility requests without adding a task contract:
+
+- `$start-here`: inspect and return the smallest useful project map.
+- `$project-intake`: preview only the questionnaire and confirmed project facts.
+- `$project-scaffold`: preview the minimal three-file scaffold; use the full set only when explicitly requested.
 
 ## Workflow
 

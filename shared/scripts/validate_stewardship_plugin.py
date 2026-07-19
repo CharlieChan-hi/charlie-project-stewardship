@@ -40,7 +40,6 @@ IMPLICIT_SKILLS = {
     "project-bootstrap",
     "project-health",
     "project-memory",
-    "task-contract",
 }
 EXPLICIT_ONLY_SKILLS = {
     "architecture-audit",
@@ -49,6 +48,7 @@ EXPLICIT_ONLY_SKILLS = {
     "project-intake",
     "project-scaffold",
     "start-here",
+    "task-contract",
 }
 PUBLIC_REPOSITORY = "https://github.com/CharlieChan-hi/charlie-project-stewardship"
 PUBLIC_MARKETPLACE_NAME = "charlie-project-stewardship"
@@ -389,7 +389,7 @@ def validate_metadata_contracts(plugin_root: Path) -> list[str]:
         elif name in IMPLICIT_SKILLS and not implicit:
             errors.append(f"Core skill `{name}` must allow implicit invocation.")
         elif name in EXPLICIT_ONLY_SKILLS and implicit:
-            errors.append(f"Compatibility/bridge skill `{name}` must be explicit-only.")
+            errors.append(f"Skill `{name}` must be explicit-only.")
         elif name not in IMPLICIT_SKILLS | EXPLICIT_ONLY_SKILLS and implicit:
             errors.append(
                 f"New skill `{name}` cannot become implicit without updating the routing contract."

@@ -1,6 +1,6 @@
 ---
 name: project-intake
-description: "用户明确要求收集产品目标、用户、平台、约束或验证期望时使用；Use for an explicit project-intake questionnaire. 不用于一般功能发现；Do not use for general feature discovery."
+description: "显式 $project-intake：收集影响架构的项目事实；Explicit project-intake questionnaire. 不用于一般功能发现；Not general feature discovery."
 ---
 
 # Project Intake
