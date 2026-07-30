@@ -36,6 +36,7 @@ BASE_TEMPLATE_FILES = {
     ".gitignore": "gitignore.md",
     "README.md": "README.md",
     "AGENTS.md": "AGENTS.md",
+    "CLAUDE.md": "CLAUDE.md",
     "docs/project_intake.md": "docs-project_intake.md",
     "docs/architecture.md": "docs-architecture.md",
     "docs/source_structure.md": "docs-source_structure.md",
@@ -53,6 +54,7 @@ BASE_TEMPLATE_FILES = {
 
 MINIMAL_TEMPLATE_FILES = {
     "AGENTS.md": "AGENTS.md",
+    "CLAUDE.md": "CLAUDE.md",
     "docs/project_intake.md": "docs-project_intake.md",
     "docs/project_preferences.md": "docs-project_preferences.md",
 }

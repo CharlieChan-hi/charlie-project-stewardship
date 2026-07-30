@@ -1,6 +1,6 @@
 ---
 name: project-bootstrap
-description: "新项目初始化、仓库接手、缺失上下文预览，或显式 $start-here/$project-intake/$project-scaffold；Explicit bootstrap/onboarding, missing-context preview, or these alias bridges. 非普通实现；Not routine work."
+description: "显式初始化/接手项目、预览缺失上下文，或调用 $start-here/$project-intake/$project-scaffold 时使用；Use for explicit bootstrap, explicit missing-context preview, or these aliases. 非普通实现；Not routine work."
 ---
 
 # Project Bootstrap
@@ -17,7 +17,7 @@ Create the smallest useful project map for an explicit bootstrap or adoption req
 ## Select the smallest mode
 
 1. **Inspect only** when the request is read-only or the repository already explains itself.
-2. **Minimal bootstrap** for an authorized bootstrap: `AGENTS.md`, `docs/project_intake.md`, and `docs/project_preferences.md`.
+2. **Minimal bootstrap** for an authorized bootstrap: `AGENTS.md` (Codex), `CLAUDE.md` (Claude), `docs/project_intake.md`, and `docs/project_preferences.md`.
 3. **Full scaffold** only when the user explicitly requests the extended set.
 4. **Source recipe** only when requested or when a confirmed stack has a real unresolved layout need.
 

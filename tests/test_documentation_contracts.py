@@ -94,6 +94,62 @@ class DocumentationContractTests(unittest.TestCase):
         self.assertIn("shared/references/platform-native-first.md", text)
         self.assertIn("shared/references/maintenance-quality-gates.md", text)
 
+    def test_maintenance_references_are_one_hop_from_claude_map(self) -> None:
+        text = (PLUGIN_ROOT / "CLAUDE.md").read_text(encoding="utf-8")
+        self.assertIn("shared/references/platform-native-first.md", text)
+        self.assertIn("shared/references/maintenance-quality-gates.md", text)
+
+    def test_plugin_root_claude_md_has_stewardship_capability_routing(self) -> None:
+        text = (PLUGIN_ROOT / "CLAUDE.md").read_text(encoding="utf-8")
+        for skill_name in (
+            "task-contract",
+            "project-bootstrap",
+            "project-memory",
+            "project-health",
+            "plan-relay",
+        ):
+            self.assertIn(skill_name, text)
+        self.assertIn("SKILL.md", text)
+        self.assertIn("Stewardship capabilities", text)
+
+    def test_normative_context_is_model_agnostic(self) -> None:
+        text = (PLUGIN_ROOT / "docs" / "ai_project_context.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("does not hard-code a model ID", text)
+        self.assertNotIn("GPT-5.6", text)
+        self.assertNotIn("Sol-style", text)
+
+    def test_lean_context_history_has_explicit_status_markers(self) -> None:
+        plan = (
+            PLUGIN_ROOT
+            / "docs"
+            / "superpowers"
+            / "plans"
+            / "2026-07-19-lean-context-update.md"
+        ).read_text(encoding="utf-8")
+        design = (
+            PLUGIN_ROOT
+            / "docs"
+            / "superpowers"
+            / "specs"
+            / "2026-07-19-lean-context-update-design.md"
+        ).read_text(encoding="utf-8")
+
+        for text in (plan, design):
+            with self.subTest(document=text.splitlines()[0]):
+                header = "\n".join(text.splitlines()[:8])
+                self.assertIn("> **Status:** Historical", header)
+        self.assertIn(
+            "unchecked boxes below preserve the original plan",
+            plan,
+        )
+        self.assertIn(
+            "point-in-time evidence, not current configuration",
+            design,
+        )
+
     def test_task_contract_is_conversation_first_and_has_stable_fields(self) -> None:
         skill_text = (
             PLUGIN_ROOT / "skills" / "task-contract" / "SKILL.md"
@@ -130,6 +186,8 @@ class DocumentationContractTests(unittest.TestCase):
         self.assertIn("explicit continue or recover request", text)
         self.assertIn("do not stop after `status`", text)
         self.assertIn("mark the recovered next step `in-progress`", text)
+        self.assertIn("when actual work begins", text)
+        self.assertIn("merely because the plan was inspected", text)
         self.assertIn("record a blocking note", text)
         self.assertIn("explicitly requests a read-only recovery", text)
 
@@ -185,21 +243,27 @@ class DocumentationContractTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, result.stderr)
         agents = (self.root / "AGENTS.md").read_text(encoding="utf-8")
+        claude_md = (self.root / "CLAUDE.md").read_text(encoding="utf-8")
         intake = (self.root / "docs" / "project_intake.md").read_text(
             encoding="utf-8"
         )
         preferences = (self.root / "docs" / "project_preferences.md").read_text(
             encoding="utf-8"
         )
-        combined = "\n".join((agents, intake, preferences))
+        combined = "\n".join((agents, claude_md, intake, preferences))
         self.assertEqual(
             sorted(
                 path.relative_to(self.root).as_posix()
                 for path in self.root.rglob("*")
                 if path.is_file()
             ),
-            ["AGENTS.md", "docs/project_intake.md", "docs/project_preferences.md"],
+            ["AGENTS.md", "CLAUDE.md", "docs/project_intake.md", "docs/project_preferences.md"],
         )
+        self.assertIn("## Project snapshot", claude_md)
+        self.assertIn("## Task-scoped map", claude_md)
+        self.assertIn("## Invariants", claude_md)
+        self.assertIn("nearest folder-level `CLAUDE.md`", claude_md)
+        self.assertNotIn("nearest folder-level `AGENTS.md`", claude_md)
         for product_name in ("Beads", "Serena", "RTK"):
             self.assertNotIn(product_name, combined)
         self.assertIn("## Forbidden patterns\n\n[需确认]", intake)
@@ -212,13 +276,14 @@ class DocumentationContractTests(unittest.TestCase):
 
     def test_minimal_template_contracts_preserve_project_facts_only(self) -> None:
         agents = (TEMPLATES_DIR / "AGENTS.md").read_text(encoding="utf-8")
+        claude_md = (TEMPLATES_DIR / "CLAUDE.md").read_text(encoding="utf-8")
         intake = (TEMPLATES_DIR / "docs-project_intake.md").read_text(
             encoding="utf-8"
         )
         preferences = (TEMPLATES_DIR / "docs-project_preferences.md").read_text(
             encoding="utf-8"
         )
-        combined = "\n".join((agents, intake, preferences))
+        combined = "\n".join((agents, claude_md, intake, preferences))
 
         expected_placeholders = {
             "AGENTS.md": ("project_type", "stack_markers", "package_manager"),
@@ -252,7 +317,7 @@ class DocumentationContractTests(unittest.TestCase):
         invariants = agents.split("## Invariants", 1)[1].split("\n## ", 1)[0]
         for invariant_class in (
             "**Scope:**",
-            "**Secrets:**",
+            "**Private values:**",
             "**High-impact actions:**",
             "**Validation:**",
         ):
@@ -261,6 +326,9 @@ class DocumentationContractTests(unittest.TestCase):
             sum(line.startswith("- **") for line in invariants.splitlines()),
             4,
         )
+        self.assertIn("`.env.example`", invariants)
+        self.assertIn("placeholder-only", invariants)
+        self.assertIn("only for presence and ignore coverage", invariants)
         self.assertIn(
             "- **High-impact actions:** Obtain the user's confirmation before "
             "destructive or hard-to-reverse actions, external/shared-state changes, "
@@ -320,6 +388,26 @@ class DocumentationContractTests(unittest.TestCase):
             "Suggestions are optional",
         ):
             self.assertNotIn(generic_coaching, combined)
+
+        self.assertIn("## Project snapshot", claude_md)
+        self.assertIn("## Task-scoped map", claude_md)
+        self.assertIn("## Invariants", claude_md)
+        self.assertIn("## Durable memory", claude_md)
+        self.assertIn("[[project_type]]", claude_md)
+        self.assertIn("[[stack_markers]]", claude_md)
+        self.assertIn("[[package_manager]]", claude_md)
+        self.assertIn("nearest folder-level `CLAUDE.md`", claude_md)
+        self.assertNotIn("nearest folder-level `AGENTS.md`", claude_md)
+        claude_invariants = claude_md.split("## Invariants", 1)[1].split("\n## ", 1)[0]
+        for invariant_class in (
+            "**Scope:**",
+            "**Private values:**",
+            "**High-impact actions:**",
+            "**Validation:**",
+        ):
+            self.assertIn(invariant_class, claude_invariants)
+        self.assertIn("`.env.example`", claude_invariants)
+        self.assertIn("placeholder-only", claude_invariants)
 
 
 if __name__ == "__main__":

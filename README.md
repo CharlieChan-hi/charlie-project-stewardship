@@ -72,7 +72,7 @@ codex plugin marketplace add CharlieChan-hi/charlie-project-stewardship --ref ma
 codex plugin add charlie-project-stewardship@charlie-project-stewardship --json
 ```
 
-安装后请新建一个 Codex 任务，使 Skill 和 metadata 从干净上下文加载。将来更新：
+安装后请新建一个 Codex 任务，使 Skill 和 metadata 从干净上下文加载。如需同时在 Claude Code 中使用，见"Claude 集成"一节。将来更新：
 
 ```bash
 codex plugin marketplace upgrade charlie-project-stewardship --json
@@ -80,6 +80,27 @@ codex plugin add charlie-project-stewardship@charlie-project-stewardship --json
 ```
 
 添加 marketplace 只让这个 Git 源可被当前 Codex 使用；它不会把插件发布进 OpenAI 官方 Plugins Directory。官方目录发布是单独的审核流程。
+
+## Claude 集成
+
+Codex 通过 plugin 机制原生加载本插件；Claude Code 通过 `CLAUDE.md` 获得等效的项目上下文和能力路由。
+
+**在已安装本插件的项目中启用 Claude 支持：**
+
+`project-bootstrap` 的最小模式会同时生成 `AGENTS.md`（Codex 自动读取）和 `CLAUDE.md`（Claude Code 自动读取），内容对等。若只需 Claude.md：
+
+```bash
+python3 "$PLUGIN_ROOT/shared/scripts/project_steward_scaffold.py" \
+  --project-root "$PROJECT_ROOT" --minimal
+```
+
+预览无误后加 `--write`。生成后，Claude Code 在该项目下工作时会自动加载 `CLAUDE.md`，不需要额外配置。
+
+**在 Claude Code 中调用 Skill：**
+
+能力按名字调用——说"使用 task-contract"或"运行 project-health"即可。完整触发规则和执行边界见对应 `skills/<name>/SKILL.md`；Claude Code 直接读取 SKILL.md，无需 Codex 插件格式。
+
+**本插件 repo 自身的 Claude 上下文：** 插件根目录的 `CLAUDE.md` 包含完整的目录地图和能力路由表，工作在本插件时由 Claude Code 自动加载。
 
 ## 60 秒快速体验
 
@@ -124,22 +145,23 @@ codex plugin add charlie-project-stewardship@charlie-project-stewardship --json
 
 ```bash
 PLUGIN_ROOT="$PWD"
+PROJECT_ROOT="${PROJECT_ROOT:?Set PROJECT_ROOT to the target project}"
 
 # 只读健康检查
 python3 "$PLUGIN_ROOT/shared/scripts/project_steward_audit.py" \
-  --project-root /path/to/project --format json
+  --project-root "$PROJECT_ROOT" --format json
 
 # 预览最小项目地图；确认后再追加 --write
 python3 "$PLUGIN_ROOT/shared/scripts/project_steward_scaffold.py" \
-  --project-root /path/to/project --minimal
+  --project-root "$PROJECT_ROOT" --minimal
 
 # 查看或恢复持久计划
 python3 "$PLUGIN_ROOT/shared/scripts/project_steward_plan.py" \
-  --project-root /path/to/project --machine workstation status
+  --project-root "$PROJECT_ROOT" --machine workstation status
 
 # 用真实变更面和验证证据做完成检查
 python3 "$PLUGIN_ROOT/shared/scripts/project_steward_guard.py" \
-  --project-root /path/to/project \
+  --project-root "$PROJECT_ROOT" \
   --changed-path src/example.py \
   --require-validation tests --validation-result tests=pass \
   --acceptance-status not-required
@@ -175,7 +197,8 @@ codex plugin add "charlie-project-stewardship@$MARKETPLACE_NAME" --json
 如果当前 checkout 来自非默认本地 marketplace，必须读取那一份 marketplace 文件的名称，并用 `codex plugin list --json` 核对其 source 后再重装：
 
 ```bash
-MARKETPLACE_PATH="/absolute/path/to/marketplace-root/.agents/plugins/marketplace.json"
+MARKETPLACE_ROOT="${MARKETPLACE_ROOT:?Set MARKETPLACE_ROOT to the marketplace root}"
+MARKETPLACE_PATH="$MARKETPLACE_ROOT/.agents/plugins/marketplace.json"
 MARKETPLACE_NAME="$(
   python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/read_marketplace_name.py" \
     --marketplace-path "$MARKETPLACE_PATH"
@@ -188,7 +211,7 @@ codex plugin add "charlie-project-stewardship@$MARKETPLACE_NAME" --json
 
 ## 兼容性与设计立场
 
-- Codex 是主要支持宿主；`.claude-plugin/plugin.json` 是可移植 package metadata，不会修改任何活动 Claude 配置。
+- Codex 是 plugin 宿主；Claude Code 通过 `CLAUDE.md` 获得等效上下文和能力路由，两者共享同一组 SKILL.md 作为事实源。`.claude-plugin/plugin.json` 是可移植 package metadata，不会修改任何活动 Claude 配置。
 - 插件面向具备自主规划和工具调用能力的现代 coding Agent，不把某个模型 ID 写成硬依赖。兼容性由行为、权限、文件系统能力和实际门禁决定。
 - 外部项目只作为设计灵感或可选能力示例，不是依赖、捆绑组件或官方背书。
 

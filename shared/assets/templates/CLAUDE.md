@@ -1,4 +1,4 @@
-# AGENTS.md
+# CLAUDE.md
 
 ## Project snapshot
 
@@ -13,7 +13,7 @@ Read only what the task needs:
 
 - `docs/project_intake.md` — goal, users, platform, constraints, and validation;
 - `docs/project_preferences.md` — durable confirmed rules and pending candidates;
-- nearest folder-level `AGENTS.md` — rules for the files in scope;
+- nearest folder-level `CLAUDE.md` — rules for the files in scope;
 - relevant source and tests — behavior being changed;
 - architecture or harness docs — only for matching structural or agent-workflow tasks;
 - `plans/active/` — only when resuming an explicitly persisted plan.

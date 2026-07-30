@@ -1,5 +1,7 @@
 # Lean Context Update Implementation Plan
 
+> **Status:** Historical implementation record. The update has landed; unchecked boxes below preserve the original plan and are not current task state.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Ship a compatibility-preserving plugin update that reduces catalog and generated-project context by at least 20% without weakening routing, safety, persistence, or installation behavior.
@@ -10,7 +12,7 @@
 
 ## Global Constraints
 
-- Source of truth is `/Users/qiqichen/Documents/SKILL/Plugin/charlie-project-stewardship`; A is Git commit `b995afb` with the pre-change plugin content inherited from `291f0cb`.
+- Source of truth is `$HOME/Documents/SKILL/Plugin/charlie-project-stewardship`; A is Git commit `b995afb` with the pre-change plugin content inherited from `291f0cb`.
 - Preserve five core Skills and six explicit-only compatibility Skills.
 - Do not change deterministic CLI interfaces or active Claude configuration.
 - No new dependency, destructive cleanup, secret-file read, OpenAI directory publication, GitHub Release, or unrelated refactor.
@@ -127,8 +129,8 @@ Expected: all pass; generated minimal scaffold still contains exactly the expect
 ### Task 4: Run blinded A/B and select the winner
 
 **Files:**
-- Create temporarily: `/Users/qiqichen/Desktop/Plugin-AB-Test/lane-X/`
-- Create temporarily: `/Users/qiqichen/Desktop/Plugin-AB-Test/lane-Y/`
+- Create temporarily: `$HOME/Desktop/Plugin-AB-Test/lane-X/`
+- Create temporarily: `$HOME/Desktop/Plugin-AB-Test/lane-Y/`
 - Create temporarily: blinded prompts, scores, and sanitized traces beneath that directory
 - Retain only if B wins: `docs/benchmarks/2026-07-19-lean-context-ab.md`
 

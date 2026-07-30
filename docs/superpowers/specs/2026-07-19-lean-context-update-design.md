@@ -1,5 +1,7 @@
 # Lean Context Update Design
 
+> **Status:** Historical design record. Environment observations below are point-in-time evidence, not current configuration.
+
 ## Goal
 
 Reduce the plugin's discovery and generated-project context cost without weakening its five core outcomes, six explicit compatibility entries, deterministic safety controls, or release/install traceability.

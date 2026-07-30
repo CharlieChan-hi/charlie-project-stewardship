@@ -14,13 +14,14 @@ Keep one repository file per explicitly persistent plan. Use the host's normal p
 - `finish` archives into `plans/done/`; it does not delete history.
 - Do not put secrets, credentials, or machine-specific absolute paths in plans.
 - Treat Git commit/push as separate shared-state synchronization requiring authorization.
+- An explicit current request to commit and push the scoped plan is that authorization. Verify the worktree, commit only the intended plan files in the repository's normal Git history, and report the resulting ref.
 - Do not install or initialize another task system from this Skill.
 
 ## Workflow
 
 Pass a stable machine label, and use exact plan and step IDs returned by `status`:
 
-For an explicit continue or recover request, do not stop after `status`. Unless the user explicitly requests a read-only recovery, mark the recovered next step `in-progress` with current evidence, or record a blocking note when progress cannot begin. Persist only that scoped plan update.
+For an explicit continue or recover request, do not stop after `status`. Unless the user explicitly requests a read-only recovery, mark the recovered next step `in-progress` with current evidence when actual work begins; if progress cannot begin, record a blocking note instead. Do not mark a step merely because the plan was inspected. Persist only that scoped plan update.
 
 ```bash
 python3 <skill-dir>/../../shared/scripts/project_steward_plan.py \

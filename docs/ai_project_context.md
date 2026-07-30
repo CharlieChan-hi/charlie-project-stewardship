@@ -32,8 +32,8 @@ model's freedom to reason, choose tools, and adapt its implementation path.
 
 The package does not hard-code a model ID or API shape. Its outcome-first instructions, compact
 autonomy boundary, progressive disclosure, and executable feedback loops are designed for current
-Codex agents, including GPT-5.6 Sol-style reasoning. Compatibility is validated by behavior and
-tool contracts rather than by assuming a particular model will follow a fixed script.
+tool-using Codex agents. Compatibility is validated by behavior and tool contracts rather than by
+assuming a particular model will follow a fixed script.
 
 ## Success Signals
 

@@ -316,6 +316,7 @@ class MetadataContractTests(unittest.TestCase):
             "completion-guard",
             "architecture-audit",
             "project-intake",
+            "project-memory",
         ):
             text = (self.root / "skills" / skill_name / "SKILL.md").read_text(
                 encoding="utf-8"
@@ -334,12 +335,14 @@ class MetadataContractTests(unittest.TestCase):
         self.assertNotIn("no specialist Skill owns", frontmatter["task-contract"])
         for alias in ("$start-here", "$project-intake", "$project-scaffold"):
             self.assertIn(alias, frontmatter["project-bootstrap"])
-        self.assertIn("missing-context preview", frontmatter["project-bootstrap"])
+        self.assertIn("explicit missing-context preview", frontmatter["project-bootstrap"])
         self.assertIn("$architecture-audit", frontmatter["architecture-audit"])
         self.assertIn("$project-intake", frontmatter["project-intake"])
-        self.assertIn("simple diff judgments", frontmatter["project-health"])
+        self.assertIn("simple diffs", frontmatter["project-health"])
         self.assertIn("read-only project", frontmatter["project-health"])
-        self.assertIn("security audits", frontmatter["project-health"])
+        self.assertIn("configuration reviews", frontmatter["project-health"])
+        self.assertNotIn("security audits", frontmatter["project-health"])
+        self.assertIn("save or enforce", frontmatter["project-memory"])
         self.assertIn("$project-scaffold", frontmatter["project-scaffold"])
         self.assertIn("project-bootstrap minimal", frontmatter["project-scaffold"])
         self.assertIn("$completion-guard", frontmatter["completion-guard"])

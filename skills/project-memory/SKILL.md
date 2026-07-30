@@ -1,6 +1,6 @@
 ---
 name: project-memory
-description: "用户明确要求跨会话保存项目规则、已验证经验或待确认候选时使用；Use for explicit durable project memory. 不用于当前任务状态或 secrets；Do not use for temporary task state or secrets."
+description: "用户明确要求“保存、记住、以后遵守”跨会话项目规则或经验时使用；Use whenever the user explicitly asks to save or enforce durable project memory. 不用于当前任务状态或 secrets；Not for temporary task state or secrets."
 ---
 
 # Project Memory
