@@ -19,6 +19,10 @@ path and available tools unless a real project invariant or approval boundary sa
 - `shared/assets/recipes/`: optional source-layout recipes.
 - `tests/`: behavior, security-boundary, idempotency, and regression tests.
 
+## Session start
+
+At each session start, check `plans/active/` for any active plan. If found, surface it with current step status and offer to resume before accepting new work — this enables automatic recovery when switching from Codex or another coding agent.
+
 ## Stewardship capabilities
 
 When the user invokes a capability by name, read the matching `skills/<name>/SKILL.md` in full

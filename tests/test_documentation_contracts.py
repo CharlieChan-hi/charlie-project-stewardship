@@ -191,6 +191,25 @@ class DocumentationContractTests(unittest.TestCase):
         self.assertIn("record a blocking note", text)
         self.assertIn("explicitly requests a read-only recovery", text)
 
+    def test_plan_relay_handoff_note_captures_investigation_context(self) -> None:
+        text = (
+            PLUGIN_ROOT / "skills" / "plan-relay" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("## Handoff note", text)
+        self.assertIn("switching to another agent", text)
+        self.assertIn("hypothesis or investigation state", text)
+        self.assertIn("ruled out", text)
+        self.assertIn("precise next action", text)
+
+    def test_session_start_check_is_in_agent_templates(self) -> None:
+        for name in ("AGENTS.md", "CLAUDE.md"):
+            with self.subTest(template=name):
+                text = (TEMPLATES_DIR / name).read_text(encoding="utf-8")
+                self.assertIn("## Session start", text)
+                self.assertIn("plans/active/", text)
+                self.assertIn("surface", text)
+
     def test_planning_templates_do_not_claim_audit_writes(self) -> None:
         for name in ("architecture-refactor-plan.md", "architecture-target-plan.md"):
             text = (
@@ -262,8 +281,10 @@ class DocumentationContractTests(unittest.TestCase):
         self.assertIn("## Project snapshot", claude_md)
         self.assertIn("## Task-scoped map", claude_md)
         self.assertIn("## Invariants", claude_md)
+        self.assertIn("## Session start", claude_md)
         self.assertIn("nearest folder-level `CLAUDE.md`", claude_md)
         self.assertNotIn("nearest folder-level `AGENTS.md`", claude_md)
+        self.assertIn("## Session start", agents)
         for product_name in ("Beads", "Serena", "RTK"):
             self.assertNotIn(product_name, combined)
         self.assertIn("## Forbidden patterns\n\n[需确认]", intake)

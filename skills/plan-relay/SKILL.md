@@ -49,6 +49,10 @@ python3 <skill-dir>/../../shared/scripts/project_steward_plan.py \
 
 Omit `--write` for a preview. `finish` refuses while steps remain; use `--force` only when the user intentionally closes an incomplete plan. Suggested Git commands are informational until synchronization is authorized.
 
+## Handoff note
+
+When saving before switching to another agent, write a `note` that captures: the current hypothesis or investigation state, what was attempted and the outcome, what has been ruled out, and the precise next action beyond the step name. This lets the receiving agent continue without re-deriving the investigative path from scratch.
+
 ## Persistence boundary
 
 Local crash recovery is current through the last successful `--write`. Cross-machine recovery is current through the last authorized synchronization. State that boundary instead of promising recovery beyond persisted state.

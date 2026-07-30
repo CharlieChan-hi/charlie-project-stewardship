@@ -30,3 +30,7 @@ Missing optional docs do not block ordinary work.
 ## Durable memory
 
 Persist only confirmed rules or verified reusable learnings, with scope, source, exceptions, and validation.
+
+## Session start
+
+At each session start, check `plans/active/` for any active plan. If found, surface it with current step status and offer to resume before accepting new work — this enables automatic recovery when switching from Codex or another coding agent.

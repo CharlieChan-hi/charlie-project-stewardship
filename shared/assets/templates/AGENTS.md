@@ -30,3 +30,7 @@ Missing optional docs do not block ordinary work.
 ## Durable memory
 
 Persist only confirmed rules or verified reusable learnings, with scope, source, exceptions, and validation.
+
+## Session start
+
+Check `plans/active/` for active plans; surface any found before accepting new work.
