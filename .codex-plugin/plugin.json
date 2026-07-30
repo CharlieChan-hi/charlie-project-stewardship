@@ -1,6 +1,6 @@
 {
   "name": "charlie-project-stewardship",
-  "version": "2.1.2",
+  "version": "2.1.3+codex.20260730055257",
   "description": "A lightweight, repository-local stewardship harness that preserves project context and completion evidence for coding agents without imposing a fixed workflow.",
   "author": {
     "name": "Charlie",
@@ -31,8 +31,8 @@
     ],
     "websiteURL": "https://github.com/CharlieChan-hi/charlie-project-stewardship",
     "brandColor": "#F74D7B",
-    "composerIcon": "./assets/stewardship-icon.png",
-    "logo": "./assets/stewardship-icon.png",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png",
     "defaultPrompt": [
       "Turn this complex request into a bounded task contract with explicit acceptance evidence.",
       "Inspect this project and add only the stewardship files it genuinely needs.",
